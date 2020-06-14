@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>xp44mm</Authors>
+    <Company>34696643@qq.com</Company>
+    <Description>stringify structural types using the syntax of F# source code.</Description>
+    <RepositoryUrl>https://github.com/xp44mm/FSharp.Literals</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

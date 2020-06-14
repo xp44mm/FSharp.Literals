@@ -1,17 +1,14 @@
 # FSharp.Literals
 
-Generic Pretty-Printing
+This code uses .NET and F# reflection to walk the structure of values so as to build a formatted representation of the value. You format structural types such as lists and tuples using the syntax of F# source code. Unrecognized values are formatted by calling the F# `sprintf "%A"` method for these values.
 
-Some useful generic functions are available for generic formatting of values. The simplest way to access this functionality is to use the `%A` specifiers in printf format strings. Here is an example:
+### Installation Instructions
 
-```F#
-> sprintf "result = %A" ([1], [true]);;
-val it : string = "result = ([1], [true])"
-```
-
-This code uses .NET and F# reflection to walk the structure of values so as to build a formatted representation of the value. You format structural types such as lists and tuples using the syntax of F# source code. Unrecognized values are formatted by calling the .NET `ToString()` method for these values.
+The recommended way to get `FSharp.Literals` is to use NuGet. The following packages are provided and maintained in the public NuGet Gallery.
 
 ### Get Started
+
+the basic usage:
 
 ```F#
 open FSharp.Literals
@@ -23,3 +20,4 @@ result:
 ```F#
 [1], [true]
 ```
+
