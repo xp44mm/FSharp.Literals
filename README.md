@@ -21,3 +21,9 @@ result:
 [1], [true]
 ```
 
+When instance is about `Nullable<'t>`, directly or indirectly, you should use more exact method:
+
+```F#
+let obj = box (Nullable 20)
+Render.stringifyNullableType (typeof<Nullable<int>>) obj
+```

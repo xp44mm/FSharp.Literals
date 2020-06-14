@@ -129,9 +129,9 @@ type RenderTest(output: ITestOutputHelper) =
 
         let ls = [x;ni]
 
-        let resx = ParenRender.instanceToString 0 typeof<Nullable<int>> x
-        let resn = ParenRender.instanceToString 0 typeof<Nullable<_>> ni
-        let resl = ParenRender.instanceToString 0 typeof<Nullable<int> list> ls
+        let resx = Render.stringifyNullableType typeof<Nullable<int>> x
+        let resn = Render.stringifyNullableType typeof<Nullable<_>> ni
+        let resl = Render.stringifyNullableType typeof<Nullable<int> list> ls
 
         Assert.Equal("Nullable 3",resx)
         Assert.Equal("Nullable()",resn)
