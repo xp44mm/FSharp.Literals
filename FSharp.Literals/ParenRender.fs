@@ -32,7 +32,7 @@ let precedences =
 let putparen (precContext:int) (precCurrent:int) (expr:string) =
     if precContext < precCurrent then expr else String.Format("({0})",expr)
 
-///不确定有或没有Nullable<>時，顯式使用明確的typeof<>提供类型
+///可能会有Nullable<>時，顯式使用明確的typeof<>提供类型
 let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
     if ty = typeof<bool> then
         let b = unbox<bool> obj
@@ -234,6 +234,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
             //|> String.concat ","
             |> sprintf "%s(%s)" name
             |> putparen precContext precedences.[" "]
+
     elif FSharpType.IsRecord ty then
         let reader = Readers.recordReader ty
         let fields = reader obj

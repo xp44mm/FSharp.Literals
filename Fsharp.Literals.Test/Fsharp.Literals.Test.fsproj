@@ -1,39 +1,52 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
 
-    <IsPackable>false</IsPackable>
-    <GenerateProgramFile>false</GenerateProgramFile>
-  </PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<GenerateProgramFile>false</GenerateProgramFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="RenderTest.fs" />
-    <Compile Include="DateTimeTest.fs" />
-    <Compile Include="ReaderTest.fs" />
-    <Compile Include="RequireQualifiedAccessTest.fs" />
-    <Compile Include="Program.fs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\..\Compiler\Compiler.Tests\Should.fs" />
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="1.3.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+		<Compile Include="IEqualityComparerTest.fs" />
+		<Compile Include="RenderTest.fs" />
+		<Compile Include="DateTimeTest.fs" />
+		<Compile Include="ReaderTest.fs" />
+		<Compile Include="RequireQualifiedAccessTest.fs" />
+		<Compile Include="DemoTest.fs" />
+		<Compile Include="JsonParsingTableTest.fs" />
+		<Compile Include="PrimitiveDriverTest.fs" />
+		<Compile Include="TokenizeTest.fs" />
+		<Compile Include="Program.fs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\FSharp.Literals\FSharp.Literals.fsproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+		<PackageReference Include="xunit" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="1.3.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="4.7.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\FSharp.Literals\FSharp.Literals.fsproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="Compiler">
+	    <HintPath>..\..\Compiler\Compiler\bin\Release\netstandard2.0\Compiler.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="4.7.2" />
+	</ItemGroup>
 
 </Project>
