@@ -1,10 +1,7 @@
 # FSharp.Literals
 
-这个库包括两部分。
+This code uses .NET and F# reflection to walk the structure of values so as to build a formatted representation of the value. You format structural types such as lists and tuples using the syntax of F# source code. Unrecognized values are formatted by calling the F# `sprintf "%A"` method for these values.
 
-第一部分，This code uses .NET and F# reflection to walk the structure of values so as to build a formatted representation of the value. You format structural types such as lists and tuples using the syntax of F# source code. Unrecognized values are formatted by calling the F# `sprintf "%A"` method for these values.
-
-第二部分，FSharp.Literals.Jsonsis a serializer for converting between FSharp structural data tree and JSON. This code is good for situations where you are only interested in getting values from JSON, you don't have a class to serialize or deserialize to, or the JSON is radically different from your class and you need to manually read and write from your objects.
 
 ## Getting FSharp.Literals over NuGet
 
@@ -18,7 +15,7 @@ You can also use the graphical library package manager ("Manage NuGet Packages f
 
 ## Get Started
 
-the basic usage:
+The basic usage:
 
 ```F#
 open FSharp.Literals

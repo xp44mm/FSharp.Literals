@@ -2,16 +2,17 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<Authors>xp44mm</Authors>
+		<Authors>xp44m</Authors>
 		<Company>34696643@qq.com</Company>
-		<Description>stringify structural types using the syntax of F# source code and/or json format.</Description>
+		<Description>stringify structural types using the syntax of F# source code.</Description>
 		<RepositoryUrl>https://github.com/xp44mm/FSharp.Literals</RepositoryUrl>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<AssemblyVersion>2.0.0.0</AssemblyVersion>
-		<FileVersion>2.0.0.0</FileVersion>
-		<Version>2.0.0</Version>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<AssemblyVersion>2.0.1.0</AssemblyVersion>
+		<FileVersion>2.0.1.0</FileVersion>
+		<Version>2.0.1</Version>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<NeutralLanguage>F#</NeutralLanguage>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -20,20 +21,6 @@
 		<Compile Include="Readers.fs" />
 		<Compile Include="ParenRender.fs" />
 		<Compile Include="Render.fs" />
-
-		<Compile Include="..\..\Compiler\Compiler\ParsingTree.fs" />
-		<Compile Include="..\..\Compiler\Compiler\ParsingProgram.fs" />
-		<Compile Include="ParseInteger.fs" />
-
-		<Compile Include="JsonToken.fs" />
-		<Compile Include="JsonTokenizer.fs" />
-		<None Include="json.yacc" />
-		<Compile Include="JsonParsingTable.fs" />
-		<Compile Include="Json.fs" />
-		<Compile Include="JsonCreation.fs" />
-		<Compile Include="JsonDriver.fs" />
-		<Compile Include="JsonRender.fs" />
-		<Compile Include="JsonModule.fs" />
 
 	</ItemGroup>
 

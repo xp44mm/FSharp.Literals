@@ -15,10 +15,6 @@
 		<Compile Include="DateTimeTest.fs" />
 		<Compile Include="ReaderTest.fs" />
 		<Compile Include="RequireQualifiedAccessTest.fs" />
-		<Compile Include="DemoTest.fs" />
-		<Compile Include="JsonParsingTableTest.fs" />
-		<Compile Include="PrimitiveDriverTest.fs" />
-		<Compile Include="TokenizeTest.fs" />
 		<Compile Include="Program.fs" />
 	</ItemGroup>
 
