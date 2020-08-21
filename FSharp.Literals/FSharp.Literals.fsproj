@@ -12,7 +12,8 @@
 		<Version>2.0.1</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<NeutralLanguage>F#</NeutralLanguage>
+		<NeutralLanguage></NeutralLanguage>
+		<RepositoryType>F#</RepositoryType>
 	</PropertyGroup>
 
 	<ItemGroup>
