@@ -48,7 +48,6 @@ let tupleReader =
             dic.TryAdd(ty,reader) |> ignore
         dic.[ty]
 
-
 ///可区分联合分解一次
 let unionReader =
     let dic = ConcurrentDictionary<Type, obj -> string * (Type*obj)[]>(HashIdentity.Structural)
@@ -126,11 +125,10 @@ let flagsReader =
 ///数组分解一次为元素
 let arrayReader =
     let dic = ConcurrentDictionary<Type, obj -> obj[]>(HashIdentity.Structural)
-    fun (ty:Type) ->
-        //let elementType = ty.GetElementType()
-        if dic.ContainsKey(ty) |> not then
-            let pLength = ty.GetProperty("Length")
-            let mGetValue = ty.GetMethod("GetValue",[|typeof<int>|])
+    fun (arrayType:Type) ->
+        if dic.ContainsKey(arrayType) |> not then
+            let pLength = arrayType.GetProperty("Length")
+            let mGetValue = arrayType.GetMethod("GetValue",[|typeof<int>|])
 
             let reader obj =
                 let len = pLength.GetValue(obj) |> unbox<int>
@@ -139,9 +137,9 @@ let arrayReader =
                 |> Array.mapi(fun i _ ->
                     mGetValue.Invoke(obj,[|box i|])
                 )
-            dic.TryAdd(ty, reader) |> ignore
+            dic.TryAdd(arrayType, reader) |> ignore
 
-        dic.[ty]
+        dic.[arrayType]
 
 ///Set可以讀取到集合中的元素
 let setReader =
@@ -159,7 +157,6 @@ let setReader =
                 |> arrReader
             dic.TryAdd(ty, reader) |> ignore
         dic.[ty]
-
 
 ///Map转化为数组
 let mapReader =

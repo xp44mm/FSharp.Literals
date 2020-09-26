@@ -213,8 +213,6 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
 
         Array.zip elementTypes elements
         |> tupleToString
-        //|> Array.map (fun(elemType,elem) -> instanceToString precedences.[","] elemType elem)
-        //|> String.concat ","
         |> putparen precContext precedences.[","]
 
     elif FSharpType.IsUnion ty then
@@ -230,8 +228,6 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         | _ ->
             fields
             |> tupleToString
-            //|> Array.map(fun(ftype,field)-> instanceToString precedences.[","] ftype field)
-            //|> String.concat ","
             |> sprintf "%s(%s)" name
             |> putparen precContext precedences.[" "]
 
@@ -249,6 +245,8 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         |> sprintf "{%s}"
     elif obj = null then
         "null"
+    elif ty = typeof<obj> && obj.GetType() <> typeof<obj> then
+        instanceToString precContext (obj.GetType()) obj
     else
         Convert.ToString(obj)
 

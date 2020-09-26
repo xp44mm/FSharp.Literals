@@ -7,9 +7,9 @@
 		<Description>stringify structural types using the syntax of F# source code.</Description>
 		<RepositoryUrl>https://github.com/xp44mm/FSharp.Literals</RepositoryUrl>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-		<AssemblyVersion>2.0.1.0</AssemblyVersion>
-		<FileVersion>2.0.1.0</FileVersion>
-		<Version>2.0.1</Version>
+		<AssemblyVersion>2.0.2.0</AssemblyVersion>
+		<FileVersion>2.0.2.0</FileVersion>
+		<Version>2.0.2</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
