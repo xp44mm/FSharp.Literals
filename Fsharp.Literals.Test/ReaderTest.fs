@@ -22,8 +22,6 @@ type ReaderTest(output: ITestOutputHelper) =
 
     [<Fact>]
     member this.``get ToArray``() =
-
-
         let fsharpAssembly = Assembly.Load("FSharp.Core")
 
         let setModuleType = fsharpAssembly.GetType("Microsoft.FSharp.Collections.SetModule")

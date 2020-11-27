@@ -10,10 +10,14 @@
 	<ItemGroup>
 
 		<Compile Include="IEqualityComparerTest.fs" />
+
+		<Compile Include="DiscriminatedUnionTest.fs" />
+
+		<Compile Include="RequireQualifiedAccessTest.fs" />
+
+		<Compile Include="ReaderTest.fs" />
 		<Compile Include="RenderTest.fs" />
 		<Compile Include="DateTimeTest.fs" />
-		<Compile Include="ReaderTest.fs" />
-		<Compile Include="RequireQualifiedAccessTest.fs" />
 		<Compile Include="Program.fs" />
 	</ItemGroup>
 

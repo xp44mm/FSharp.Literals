@@ -9,7 +9,7 @@
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 		<AssemblyVersion>2.0.2.0</AssemblyVersion>
 		<FileVersion>2.0.2.0</FileVersion>
-		<Version>2.0.2</Version>
+		<Version>2.0.3</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
@@ -19,6 +19,7 @@
 	<ItemGroup>
 		<Compile Include="StringUtils.fs" />
 		<Compile Include="EnumUtils.fs" />
+		<Compile Include="DiscriminatedUnion.fs" />
 		<Compile Include="Readers.fs" />
 		<Compile Include="ParenRender.fs" />
 		<Compile Include="Render.fs" />

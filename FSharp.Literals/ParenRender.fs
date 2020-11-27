@@ -216,7 +216,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         |> putparen precContext precedences.[","]
 
     elif FSharpType.IsUnion ty then
-        let reader = Readers.unionReader ty
+        let reader = DiscriminatedUnion.unionReader ty
         let name,fields = reader obj
 
         match fields with
@@ -260,7 +260,10 @@ and tupleToString fields =
     |> Array.map(fun(ftype,field)-> instanceToString precedences.[","] ftype field)
     |> String.concat ","
 
-///确定没有Nullable<>可以使用obj.GetType()
-let stringify obj = instanceToString 0 (obj.GetType()) obj
-
+// null, nullable, None需要显示提供类型
 let stringifyNullableType tp obj = instanceToString 0 tp obj
+
+///确定可以使用obj.GetType()
+let stringify obj = 
+    stringifyNullableType (obj.GetType()) obj
+
