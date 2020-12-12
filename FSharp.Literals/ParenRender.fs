@@ -244,7 +244,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         |> String.concat ";"
         |> sprintf "{%s}"
     elif obj = null then
-        "null"
+        "null" //没有类型信息，null,nullable,None都打印成null
     elif ty = typeof<obj> && obj.GetType() <> typeof<obj> then
         instanceToString precContext (obj.GetType()) obj
     else

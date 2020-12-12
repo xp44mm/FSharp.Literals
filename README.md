@@ -15,15 +15,25 @@ You can also use the graphical library package manager ("Manage NuGet Packages f
 
 ## Get Started
 
-The basic usage：
+The basic usage:
 
 ```F#
-let code = ReadOnlyRecord.databaseDefinition connstr db_name
+open FSharp.Literals
+Render.stringify ([1], [true])
 ```
 
-以上代码将会生成表字段组成的记录，并且有一个静态数组，装有数据库表内的所有数据。
+result: 
 
-有两个方法用于验证数据库文件是否过期：
+```F#
+[1], [true]
+```
+
+When instance is about `Nullable<'t>`, directly or indirectly, you should use more special method:
+
+```F#
+let obj = box (Nullable 20)
+Render.stringifyNullableType (typeof<Nullable<int>>) obj
+```
 
 
 
