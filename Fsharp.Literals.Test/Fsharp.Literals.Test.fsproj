@@ -40,12 +40,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="Compiler">
-	    <HintPath>..\..\Compiler\Compiler\bin\Release\netstandard2.0\Compiler.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Update="FSharp.Core" Version="4.7.2" />
 	</ItemGroup>
 

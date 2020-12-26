@@ -183,28 +183,34 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typeof<Set<_>>.GetGenericTypeDefinition() then
         let reader = Readers.setReader ty
         let elements = reader obj
-        let elementType = ty.GenericTypeArguments.[0]
+        if elements.Length = 0 then
+            "Set.empty"
+        else
+            let elementType = ty.GenericTypeArguments.[0]
 
-        arrayToString elementType elements
-        |> fun content ->
-            if elements.Length > 999 then
+            arrayToString elementType elements
+            |> fun content ->
+                //if elements.Length > 999 then
                 String.Format("set [|{0}|]",content)
-            else
-                String.Format("set [{0}]",content)
-        |> putparen precContext precedences.[" "]
+                //else
+                //    String.Format("set [{0}]",content)
+            |> putparen precContext precedences.[" "]
 
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typeof<Map<_,_>>.GetGenericTypeDefinition() then
         let reader = Readers.mapReader ty
         let elements = reader obj
-        let tupleType = FSharpType.MakeTupleType(ty.GenericTypeArguments)
+        if elements.Length = 0 then
+            "Map.empty"
+        else
+            let tupleType = FSharpType.MakeTupleType(ty.GenericTypeArguments)
 
-        arrayToString tupleType elements
-        |> fun content ->
-            if elements.Length > 999 then
+            arrayToString tupleType elements
+            |> fun content ->
+                //if elements.Length > 999 then
                 String.Format("Map.ofArray [|{0}|]",content)
-            else
-                String.Format("Map.ofList [{0}]",content)
-        |> putparen precContext precedences.[" "]
+                //else
+                //    String.Format("Map.ofList [{0}]",content)
+            |> putparen precContext precedences.[" "]
 
     elif FSharpType.IsTuple ty then
         let reader = Readers.tupleReader ty
