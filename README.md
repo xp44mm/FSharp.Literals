@@ -28,13 +28,9 @@ result:
 [1], [true]
 ```
 
-When instance is about `Nullable<'t>`, directly or indirectly, you should use more special method:
+When instance is about `Nullable<'t>`, `None` directly or indirectly, you should provide type info for stringify method:
 
 ```F#
 let obj = box (Nullable 20)
 Render.stringifyNullableType (typeof<Nullable<int>>) obj
 ```
-
-
-
-
