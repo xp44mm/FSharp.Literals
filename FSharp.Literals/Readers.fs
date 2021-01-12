@@ -16,28 +16,28 @@ let mMoveNext = biteror.GetMethod("MoveNext")
 ///列表分解一次为元素
 let listReader =
     let dic = ConcurrentDictionary<Type, obj -> obj[]>(HashIdentity.Structural)
-    fun (ty:Type) ->
-        //let elemType = ty.GenericTypeArguments.[0]
-        if dic.ContainsKey(ty) |> not then
-            let pIsEmpty = ty.GetProperty("IsEmpty")
-            let pHead = ty.GetProperty("Head")
-            let pTail = ty.GetProperty("Tail")
-            let rec objToRevList acc ls =
-                if pIsEmpty.GetValue(ls) |> unbox<bool> then
-                    acc
-                else
-                    let elem = pHead.GetValue(ls)
-                    let tail = pTail.GetValue(ls)
-                    let acc = elem :: acc
-                    objToRevList acc tail
-            let reader obj =
-                obj
-                |> objToRevList []
-                |> List.rev
-                |> List.toArray
-            dic.TryAdd(ty, reader) |> ignore
 
-        dic.[ty]
+    let factory (ty:Type) =
+        let pIsEmpty = ty.GetProperty("IsEmpty")
+        let pHead = ty.GetProperty("Head")
+        let pTail = ty.GetProperty("Tail")
+        let rec objToRevList acc ls =
+            if pIsEmpty.GetValue(ls) |> unbox<bool> then
+                acc
+            else
+                let elem = pHead.GetValue(ls)
+                let tail = pTail.GetValue(ls)
+                let acc = elem :: acc
+                objToRevList acc tail
+        let reader obj =
+            obj
+            |> objToRevList []
+            |> List.rev
+            |> List.toArray
+        reader
+
+    fun (ty:Type) -> dic.GetOrAdd(ty,Func<_,_> factory)
+
 
 ///元组分解一次为元素
 let tupleReader =

@@ -154,7 +154,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
             Enum.GetName(ty,obj)
             |> sprintf "%s.%s" ty.Name
             |> putparen precContext precedences.["."]
-    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typeof<Nullable<_>>.GetGenericTypeDefinition() then
+    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Nullable<_>> then //.GetGenericTypeDefinition()
         if obj = null then
             "Nullable()"
         else
@@ -171,7 +171,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         arrayToString elemType elements
         |> sprintf "[|%s|]"
 
-    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typeof<List<_>>.GetGenericTypeDefinition() then
+    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<List<_>> then // .GetGenericTypeDefinition()
         //一定無需加括號
         let reader = Readers.listReader ty
         let elements = reader obj
@@ -180,7 +180,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         arrayToString elemType elements
         |> sprintf "[%s]"
 
-    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typeof<Set<_>>.GetGenericTypeDefinition() then
+    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Set<_>> then //.GetGenericTypeDefinition()
         let reader = Readers.setReader ty
         let elements = reader obj
         if elements.Length = 0 then
@@ -190,13 +190,10 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
 
             arrayToString elementType elements
             |> fun content ->
-                //if elements.Length > 999 then
-                String.Format("set [|{0}|]",content)
-                //else
-                //    String.Format("set [{0}]",content)
+                String.Format("set [{0}]",content)
             |> putparen precContext precedences.[" "]
 
-    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typeof<Map<_,_>>.GetGenericTypeDefinition() then
+    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Map<_,_>> then //.GetGenericTypeDefinition() 
         let reader = Readers.mapReader ty
         let elements = reader obj
         if elements.Length = 0 then
@@ -206,10 +203,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
 
             arrayToString tupleType elements
             |> fun content ->
-                //if elements.Length > 999 then
-                String.Format("Map.ofArray [|{0}|]",content)
-                //else
-                //    String.Format("Map.ofList [{0}]",content)
+                String.Format("Map.ofList [{0}]",content)
             |> putparen precContext precedences.[" "]
 
     elif FSharpType.IsTuple ty then
@@ -254,7 +248,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
     elif ty = typeof<obj> && obj.GetType() <> typeof<obj> then
         instanceToString precContext (obj.GetType()) obj
     else
-        Convert.ToString(obj)
+        sprintf "%A" obj
 
 and arrayToString elemType (elements:obj[]) =
     elements
