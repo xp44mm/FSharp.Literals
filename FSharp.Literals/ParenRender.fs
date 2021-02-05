@@ -104,7 +104,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         unbox<string> obj
         |> StringUtils.toStringLiteral
 
-    elif ty = typeof<TimeSpan> then //空格運算符優先級
+    elif ty = typeof<TimeSpan> then
         let tspan = unbox<TimeSpan> obj
 
         [
@@ -119,7 +119,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         |> sprintf "TimeSpan(%s)"
         |> putparen precContext precedences.[" "]
 
-    elif ty = typeof<DateTimeOffset> then //空格運算符優先級
+    elif ty = typeof<DateTimeOffset> then
         let thisDate = unbox<DateTimeOffset> obj
         [
             thisDate.Year       .ToString()
@@ -139,7 +139,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         let dt = unbox<DateTime> obj
         instanceToString precContext typeof<DateTimeOffset> (DateTimeOffset dt)
 
-    elif ty = typeof<Guid> then //空格運算符優先級
+    elif ty = typeof<Guid> then
         let id = unbox<Guid> obj
         sprintf "Guid(\"%s\")" <| id.ToString()
         |> putparen precContext precedences.[" "]
@@ -154,7 +154,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
             Enum.GetName(ty,obj)
             |> sprintf "%s.%s" ty.Name
             |> putparen precContext precedences.["."]
-    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Nullable<_>> then //.GetGenericTypeDefinition()
+    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Nullable<_>> then
         if obj = null then
             "Nullable()"
         else
@@ -163,24 +163,23 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
             instanceToString precedences.[" "] underlyingType obj
             |> sprintf "Nullable %s"
         |> putparen precContext precedences.[" "]
-    elif ty.IsArray && ty.GetArrayRank() = 1 then //一定無需加括號
+    elif ty.IsArray && ty.GetArrayRank() = 1 then
         let reader = Readers.arrayReader ty
         let elements = reader obj
         let elemType = ty.GetElementType()
 
         arrayToString elemType elements
-        |> sprintf "[|%s|]"
+        |> sprintf "[|%s|]"  //一定無需加括號
 
-    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<List<_>> then // .GetGenericTypeDefinition()
-        //一定無需加括號
+    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<List<_>> then
         let reader = Readers.listReader ty
         let elements = reader obj
         let elemType = ty.GenericTypeArguments.[0]
 
         arrayToString elemType elements
-        |> sprintf "[%s]"
+        |> sprintf "[%s]" //一定無需加括號
 
-    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Set<_>> then //.GetGenericTypeDefinition()
+    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Set<_>> then
         let reader = Readers.setReader ty
         let elements = reader obj
         if elements.Length = 0 then
@@ -193,7 +192,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
                 String.Format("set [{0}]",content)
             |> putparen precContext precedences.[" "]
 
-    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Map<_,_>> then //.GetGenericTypeDefinition() 
+    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Map<_,_>> then 
         let reader = Readers.mapReader ty
         let elements = reader obj
         if elements.Length = 0 then

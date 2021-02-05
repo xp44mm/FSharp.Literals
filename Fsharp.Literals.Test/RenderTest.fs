@@ -7,6 +7,7 @@ open System.Reflection
 open System.IO
 open System.Text.RegularExpressions
 open FSharp.Literals
+open FSharp.xUnit
 
 type RenderTest(output: ITestOutputHelper) =
     [<Fact>]
@@ -169,32 +170,7 @@ type RenderTest(output: ITestOutputHelper) =
     member this.``render tuple test``() =
         let ls = ([1;2;3],"x")
         let res = ParenRender.instanceToString 0 typeof<int list * string> ls
-        output.WriteLine(res)
-
-    [<Fact>]
-    member this.``render null test``() =
-        let ls = null
-        let res = ParenRender.instanceToString 0 typeof<_> ls
-        Assert.Equal("null",res)
-
-    [<Fact>]
-    member this.``render enum test``() =
-        let e = FileMode.Open
-        let res = ParenRender.instanceToString 0 typeof<FileMode> e
-        output.WriteLine(res)
-
-    [<Fact>]
-    member this.``render flags enum test``() =
-        let flags = BindingFlags.Public ||| BindingFlags.NonPublic
-
-        let res = ParenRender.instanceToString 0 typeof<BindingFlags> flags
-        output.WriteLine(res)
-
-    [<Fact>]
-    member this.``render flags none enum test``() =
-        let none = RegexOptions.None
-        let res = ParenRender.instanceToString 0 typeof<RegexOptions> none
-        output.WriteLine(res)
+        Should.equal res "[1;2;3],\"x\""
 
     [<Fact>]
     member this.``render some test``() =
@@ -206,19 +182,33 @@ type RenderTest(output: ITestOutputHelper) =
     member this.``render record test``() =
         let record = {| name = "xyz"; ``your age`` = 18 |}
         let res = ParenRender.stringify record
-        output.WriteLine(res)
         Assert.Equal("""{name="xyz";``your age``=18}""",res)
 
+    [<Fact>]
+    member this.``render null test``() =
+        let ls = null
+        let res = ParenRender.instanceToString 0 typeof<_> ls
+        Assert.Equal("null",res)
 
     [<Fact>]
-    member this.``render elasticAll test``() =
-        let arr = [| ("10",([-50.0;20.0;100.0;200.0;250.0;260.0;280.0;300.0;320.0;340.0;350.0;360.0;380.0;400.0;410.0;420.0;430.0;440.0;450.0],[198.0;198.0;191.0;181.0;176.0;175.0;173.0;171.0;168.0;166.0;164.0;163.0;160.0;157.0;156.0;155.0;155.0;154.0;153.0])); ("20",([-50.0;20.0;100.0;200.0;250.0;260.0;280.0;300.0;320.0;340.0;350.0;360.0;380.0;400.0;410.0;420.0;430.0;440.0;450.0;460.0;470.0;480.0],[198.0;198.0;183.0;175.0;171.0;170.0;168.0;166.0;165.0;163.0;162.0;161.0;159.0;158.0;155.0;153.0;151.0;148.0;146.0;144.0;141.0;129.0])); ("Q235",([-50.0;20.0;100.0;200.0;250.0;260.0;280.0;300.0;350.0;400.0],[206.0;206.0;200.0;192.0;188.0;187.0;186.0;184.0;170.0;160.0])); ("Q345",([-50.0;20.0;100.0;200.0;250.0;260.0;280.0;300.0;320.0;340.0;350.0;360.0;380.0;400.0;450.0],[206.0;206.0;200.0;189.0;185.0;184.0;183.0;181.0;179.0;177.0;176.0;175.0;173.0;171.0;160.0])) |];
+    member this.``render enum test``() =
+        let e = FileMode.Open
+        let res = ParenRender.instanceToString 0 typeof<FileMode> e
+        Should.equal res "FileMode.Open"
+    [<Fact>]
+    member this.``render flags enum test``() =
+        let flags = BindingFlags.Public ||| BindingFlags.NonPublic
+        let res = ParenRender.instanceToString 0 typeof<BindingFlags> flags
+        Should.equal res "BindingFlags.Public|||BindingFlags.NonPublic"
 
-        let e = snd arr.[0]
-        let ls = fst e
-        let elasticAll = Map.ofArray arr
-        
-        let res = Render.stringify ls
-        res |> output.WriteLine
+    [<Fact>]
+    member this.``render flags none enum test``() =
+        let none = RegexOptions.None
+        let res = ParenRender.instanceToString 0 typeof<RegexOptions> none
+        Should.equal res "RegexOptions.None"
 
-        ////Assert.Equal("Some 123",res)
+    [<Fact>]
+    member this.``render enum underlying value test``() =
+        let none = RegexOptions.None
+        let res = ParenRender.stringifyNullableType (typeof<RegexOptions>.GetEnumUnderlyingType()) none
+        Should.equal res "0"
