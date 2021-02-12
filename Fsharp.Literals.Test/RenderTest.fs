@@ -118,10 +118,30 @@ type RenderTest(output: ITestOutputHelper) =
         Assert.Equal(@"'\t'",res)
 
     [<Fact>]
+    member this.``render string test``() =
+        let ls = ""
+        let res = ParenRender.instanceToString 0 typeof<string> ls
+        Assert.Equal("\"\"",res)
+
+    [<Fact>]
+    member this.``render DBNull test``() =
+        let x = box DBNull.Value
+        let y = ParenRender.instanceToString 0 typeof<DBNull> x
+        Assert.Equal("DBNull.Value",y)
+
+    [<Fact>]
     member this.``render DateTimeOffset test``() =
         let dto = DateTimeOffset(2019,9,19,15,18,16,757,TimeSpan(0,8,0,0,0)) //DateTimeOffset.Now
         let res = ParenRender.instanceToString 0 typeof<DateTimeOffset> dto
         Assert.Equal("DateTimeOffset(2019,9,19,15,18,16,757,TimeSpan(0,8,0,0,0))",res)
+
+    [<Fact>]
+    member this.``render Guid test``() =
+        let x = Guid("936da01f-9abd-4d9d-80c7-02af85c822a8") //Guid.NewGuid()
+        let y = Render.serialize x
+        Should.equal y "Guid(\"936da01f-9abd-4d9d-80c7-02af85c822a8\")"
+        let y0 = x.ToString()
+        Should.equal y0 "936da01f-9abd-4d9d-80c7-02af85c822a8"
 
     [<Fact>]
     member this.``render nullable test``() =

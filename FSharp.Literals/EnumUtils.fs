@@ -35,11 +35,10 @@ let isGenericZero (ty:Type) (flag:obj) =
     elif ty = typeof<char> then // never
         let flag = unbox<char> flag
         flag = char 0
-
     else
         failwithf "%A" ty
 
-///
+/// 测试某位整数是否为真
 let genericMask (ty:Type) (inp:obj) (flag:obj) =
     if ty = typeof<sbyte> then
         let inp = unbox<sbyte> inp
@@ -57,39 +56,36 @@ let genericMask (ty:Type) (inp:obj) (flag:obj) =
         let inp = unbox<uint16> inp
         let flag = unbox<uint16> flag
         inp &&& flag = flag
-
     elif ty = typeof<int32> then
         let inp = unbox<int32> inp
         let flag = unbox<int32> flag
         inp &&& flag = flag
-
     elif ty = typeof<uint32> then
         let inp = unbox<uint32> inp
         let flag = unbox<uint32> flag
         inp &&& flag = flag
-
     elif ty = typeof<int64> then
         let inp = unbox<int64> inp
         let flag = unbox<int64> flag
         inp &&& flag = flag
-
     elif ty = typeof<uint64> then
         let inp = unbox<uint64> inp
         let flag = unbox<uint64> flag
         inp &&& flag = flag
-
     elif ty = typeof<char> then // never
         let inp = unbox<char> inp |> byte
         let flag = unbox<char> flag |> byte
         inp &&& flag = flag
-
     elif ty = typeof<bool> then // never
         let inp = unbox<bool> inp |> Convert.ToByte
         let flag = unbox<bool> flag |> Convert.ToByte
         inp &&& flag = flag
-
     else
         failwith "Unknown Flags Enum Underlying Type."
+
+let mask<'t> (inp:'t) (flag:'t) =
+    let ty = typeof<'t>
+    genericMask ty inp flag
 
 /// from newtonsoft
 let private toUInt64 (ty:Type) =
@@ -101,16 +97,16 @@ let private toUInt64 (ty:Type) =
         unbox<int16> >> uint64
     elif ty = typeof<uint16> then
         unbox<uint16> >> uint64
-    elif ty = typeof<char> then
-        unbox<char> >> uint64
+    //elif ty = typeof<char> then
+    //    unbox<char> >> uint64
     elif ty = typeof<int32> then
         unbox<int32> >> uint64
     elif ty = typeof<uint32> then
         unbox<uint16> >> uint64
     elif ty = typeof<int64> then
         unbox<int64> >> uint64
-    elif ty = typeof<bool> then
-        unbox<bool> >> Convert.ToByte >> uint64
+    //elif ty = typeof<bool> then
+    //    unbox<bool> >> Convert.ToByte >> uint64
     elif ty = typeof<uint64> then
         unbox<uint64>
     else

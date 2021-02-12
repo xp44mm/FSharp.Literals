@@ -33,79 +33,81 @@ let putparen (precContext:int) (precCurrent:int) (expr:string) =
     if precContext < precCurrent then expr else String.Format("({0})",expr)
 
 ///可能会有Nullable<>時，顯式使用明確的typeof<>提供类型
-let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
+let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
     if ty = typeof<bool> then
-        let b = unbox<bool> obj
+        let b = unbox<bool> value
         if b then "true" else "false"
 
     elif ty = typeof<sbyte> then
-        let value = unbox<sbyte> obj
+        let value = unbox<sbyte> value
         Convert.ToString value + "y"
 
     elif ty = typeof<byte> then
-        let value = unbox<byte> obj
+        let value = unbox<byte> value
         Convert.ToString value + "uy"
 
     elif ty = typeof<int16> then
-        let value = unbox<int16> obj
+        let value = unbox<int16> value
         Convert.ToString value  + "s"
 
     elif ty = typeof<uint16> then
-        let value = unbox<uint16> obj
+        let value = unbox<uint16> value
         Convert.ToString value  + "us"
 
     elif ty = typeof<int> then
-        let value = unbox<int> obj
+        let value = unbox<int> value
         Convert.ToString value
 
     elif ty = typeof<uint32> then
-        let value = unbox<uint32> obj
+        let value = unbox<uint32> value
         Convert.ToString value  + "u"
 
     elif ty = typeof<int64> then
-        let value = unbox<int64> obj
+        let value = unbox<int64> value
         Convert.ToString value  + "L"
 
     elif ty = typeof<uint64> then
-        let value = unbox<uint64> obj
+        let value = unbox<uint64> value
         Convert.ToString value + "UL"
 
     elif ty = typeof<nativeint> then
-        let value = unbox<nativeint> obj
+        let value = unbox<nativeint> value
         Convert.ToString value + "n"
 
     elif ty = typeof<unativeint> then
-        let value = unbox<unativeint> obj
+        let value = unbox<unativeint> value
         Convert.ToString value + "un"
 
     elif ty = typeof<single> then
-        let value = unbox<single> obj
+        let value = unbox<single> value
         let s = value.ToString("R", CultureInfo.InvariantCulture) // "G9"
         decimalpoint s + "f"
 
     elif ty = typeof<float> then
-        let value = unbox<float> obj
+        let value = unbox<float> value
         let s = value.ToString("R", CultureInfo.InvariantCulture) // "G17"
         decimalpoint s
 
     elif ty = typeof<decimal> then
-        let value = unbox<decimal> obj
+        let value = unbox<decimal> value
         Convert.ToString value + "M"
 
     elif ty = typeof<bigint> then
-        let value = unbox<bigint> obj
+        let value = unbox<bigint> value
         Convert.ToString value + "I"
 
     elif ty = typeof<char> then
-        unbox<char> obj
+        unbox<char> value
         |> StringUtils.toCharLiteral
 
     elif ty = typeof<string> then
-        unbox<string> obj
+        unbox<string> value
         |> StringUtils.toStringLiteral
 
+    elif ty = typeof<DBNull> || DBNull.Value.Equals value then
+        "DBNull.Value"
     elif ty = typeof<TimeSpan> then
-        let tspan = unbox<TimeSpan> obj
+        let tspan = unbox<TimeSpan> value
 
         [
             tspan.Days
@@ -120,7 +122,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         |> putparen precContext precedences.[" "]
 
     elif ty = typeof<DateTimeOffset> then
-        let thisDate = unbox<DateTimeOffset> obj
+        let thisDate = unbox<DateTimeOffset> value
         [
             thisDate.Year       .ToString()
             thisDate.Month      .ToString()
@@ -136,36 +138,36 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         |> putparen precContext precedences.[" "]
 
     elif ty = typeof<DateTime> then
-        let dt = unbox<DateTime> obj
+        let dt = unbox<DateTime> value
         instanceToString precContext typeof<DateTimeOffset> (DateTimeOffset dt)
 
     elif ty = typeof<Guid> then
-        let id = unbox<Guid> obj
+        let id = unbox<Guid> value
         sprintf "Guid(\"%s\")" <| id.ToString()
         |> putparen precContext precedences.[" "]
 
     elif ty.IsEnum then
         if ty.IsDefined(typeof<FlagsAttribute>,false) then
             let reader = Readers.flagsReader ty
-            reader obj
+            reader value
             |> String.concat "|||"
             |> putparen precContext precedences.["|||"]
         else
-            Enum.GetName(ty,obj)
+            Enum.GetName(ty,value)
             |> sprintf "%s.%s" ty.Name
             |> putparen precContext precedences.["."]
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Nullable<_>> then
-        if obj = null then
+        if value = null then
             "Nullable()"
         else
             let underlyingType = ty.GenericTypeArguments.[0]
 
-            instanceToString precedences.[" "] underlyingType obj
+            instanceToString precedences.[" "] underlyingType value
             |> sprintf "Nullable %s"
         |> putparen precContext precedences.[" "]
     elif ty.IsArray && ty.GetArrayRank() = 1 then
         let reader = Readers.arrayReader ty
-        let elements = reader obj
+        let elements = reader value
         let elemType = ty.GetElementType()
 
         arrayToString elemType elements
@@ -173,7 +175,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
 
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<List<_>> then
         let reader = Readers.listReader ty
-        let elements = reader obj
+        let elements = reader value
         let elemType = ty.GenericTypeArguments.[0]
 
         arrayToString elemType elements
@@ -181,7 +183,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
 
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Set<_>> then
         let reader = Readers.setReader ty
-        let elements = reader obj
+        let elements = reader value
         if elements.Length = 0 then
             "Set.empty"
         else
@@ -194,7 +196,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
 
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Map<_,_>> then 
         let reader = Readers.mapReader ty
-        let elements = reader obj
+        let elements = reader value
         if elements.Length = 0 then
             "Map.empty"
         else
@@ -207,7 +209,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
 
     elif FSharpType.IsTuple ty then
         let reader = Readers.tupleReader ty
-        let elements = reader obj
+        let elements = reader value
         let elementTypes = FSharpType.GetTupleElements(ty)
 
         Array.zip elementTypes elements
@@ -216,7 +218,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
 
     elif FSharpType.IsUnion ty then
         let reader = DiscriminatedUnion.unionReader ty
-        let name,fields = reader obj
+        let name,fields = reader value
 
         match fields with
         | [||] -> name
@@ -232,7 +234,7 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
 
     elif FSharpType.IsRecord ty then
         let reader = Readers.recordReader ty
-        let fields = reader obj
+        let fields = reader value
 
         fields
         |> Array.map(fun(nm,tp,value)->
@@ -242,12 +244,12 @@ let rec instanceToString (precContext:int) (ty:Type) (obj:obj) =
         )
         |> String.concat ";"
         |> sprintf "{%s}"
-    elif obj = null then
+    elif value = null then
         "null" //没有类型信息，null,nullable,None都打印成null
-    elif ty = typeof<obj> && obj.GetType() <> typeof<obj> then
-        instanceToString precContext (obj.GetType()) obj
+    elif ty = typeof<obj> && value.GetType() <> typeof<obj> then
+        instanceToString precContext (value.GetType()) value
     else
-        sprintf "%A" obj
+        sprintf "%A" value
 
 and arrayToString elemType (elements:obj[]) =
     elements
@@ -260,9 +262,9 @@ and tupleToString fields =
     |> String.concat ","
 
 // null, nullable, None需要显示提供类型
-let stringifyNullableType tp obj = instanceToString 0 tp obj
+let stringifyNullableType ty value = instanceToString 0 ty value
 
 ///确定可以使用obj.GetType()
-let stringify obj = 
-    stringifyNullableType (obj.GetType()) obj
+let stringify value = 
+    instanceToString 0 (value.GetType()) value
 

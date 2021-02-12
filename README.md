@@ -19,18 +19,11 @@ The basic usage:
 
 ```F#
 open FSharp.Literals
-Render.stringify ([1], [true])
+Render.serialize ([1], [true])
 ```
 
 result: 
 
 ```F#
 [1], [true]
-```
-
-When instance is about `Nullable<'t>`, `None` directly or indirectly, you should provide type info for stringify method:
-
-```F#
-let obj = box (Nullable 20)
-Render.stringifyNullableType (typeof<Nullable<int>>) obj
 ```

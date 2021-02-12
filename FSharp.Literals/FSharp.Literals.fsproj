@@ -6,15 +6,15 @@
 		<Company>34696643@qq.com</Company>
 		<Description>stringify structural types using the syntax of F# source code.</Description>
 		<RepositoryUrl>https://github.com/xp44mm/FSharp.Literals</RepositoryUrl>
-		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-		<AssemblyVersion>2.0.5.0</AssemblyVersion>
-		<FileVersion>2.0.5.0</FileVersion>
-		<Version>2.0.5</Version>
+		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+		<AssemblyVersion>2.0.6.0</AssemblyVersion>
+		<FileVersion>2.0.6.0</FileVersion>
+		<Version>2.0.6</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
 		<RepositoryType>F#</RepositoryType>
-		<PackageReleaseNotes>list over array</PackageReleaseNotes>
+		<PackageReleaseNotes>add DBNull.</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>

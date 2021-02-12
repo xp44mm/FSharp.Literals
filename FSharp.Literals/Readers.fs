@@ -49,7 +49,7 @@ let tupleReader =
         dic.[ty]
 
 let recordReader =
-    let dic = ConcurrentDictionary<Type, obj -> (string*Type*obj)[]>(HashIdentity.Structural)
+    let dic = ConcurrentDictionary<Type, obj -> (string * Type * obj)[]>(HashIdentity.Structural)
     fun (ty:Type) ->
         if dic.ContainsKey(ty)|> not then
             let fields = FSharpType.GetRecordFields ty
@@ -73,19 +73,19 @@ let flagsReader =
                 Enum.GetNames(ty)
                 |> Array.map(fun name ->
                     let f = ty.GetField(name, BindingFlags.NonPublic ||| BindingFlags.Public ||| BindingFlags.Static)
-                    f.GetValue(null),sprintf "%s.%s" ty.Name name
+                    f.GetValue(null), sprintf "%s.%s" ty.Name name
                 )
                 |> Array.partition(fun(v,nm)-> EnumUtils.isGenericZero enumUnderlyingType v)
 
             let zeroNames = zeroPairs |> Array.map snd
 
-            let reader (obj:obj) =
-                let flags =
+            let reader (inpEnum:obj) =
+                let flagNames =
                     positivePairs
-                    |> Array.filter(fun(value,name)->EnumUtils.genericMask enumUnderlyingType obj value)
+                    |> Array.filter(fun(flagValue,name)-> EnumUtils.genericMask enumUnderlyingType inpEnum flagValue)
                     |> Array.map snd
 
-                if Array.isEmpty flags then zeroNames else flags
+                if Array.isEmpty flagNames then zeroNames else flagNames
             dic.TryAdd(ty,reader) |> ignore
         dic.[ty]
 
@@ -115,9 +115,9 @@ let setReader =
     fun (ty:Type) ->
         if dic.ContainsKey(ty) |> not then
             let elementType = ty.GenericTypeArguments.[0]
-            let arrayType = ty.GenericTypeArguments.[0].MakeArrayType()
-            let arrReader = arrayReader arrayType
+            let arrayType = elementType.MakeArrayType()
             let mToArray = mToArrayDef.MakeGenericMethod(elementType)
+            let arrReader = arrayReader arrayType
             
             let reader obj =
                 mToArray.Invoke(null,[|obj|])
