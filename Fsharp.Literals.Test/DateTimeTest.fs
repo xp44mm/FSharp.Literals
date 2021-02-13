@@ -1,10 +1,9 @@
-﻿namespace FSharp.Literals.Test
+﻿namespace FSharp.Literals
 
 open Xunit
 open Xunit.Abstractions
 open System
 open System.Reflection
-open FSharp.Literals
 
 type DateTimeTest(output: ITestOutputHelper) =
 

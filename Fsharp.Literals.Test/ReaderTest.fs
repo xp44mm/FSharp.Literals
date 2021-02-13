@@ -1,11 +1,10 @@
-﻿namespace FSharp.Literals.Test
+﻿namespace FSharp.Literals
 
 open Xunit
 open Xunit.Abstractions
 
 open System.Reflection
 open Microsoft.FSharp.Reflection
-open FSharp.Literals
 
 type ReaderTest(output: ITestOutputHelper) =
     [<Fact>]

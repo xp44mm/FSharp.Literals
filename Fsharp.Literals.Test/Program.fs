@@ -1,6 +1,5 @@
-module Program
+module FSharp.Literals.Program
 
-open FSharp.Literals
 open System
 open Microsoft.FSharp.Reflection
 

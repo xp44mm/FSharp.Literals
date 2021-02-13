@@ -1,4 +1,4 @@
-﻿namespace FSharp.Literals.Test
+﻿namespace FSharp.Literals
 
 open Xunit
 open Xunit.Abstractions
@@ -6,7 +6,6 @@ open System
 open System.Reflection
 open System.IO
 open System.Text.RegularExpressions
-open FSharp.Literals
 open FSharp.xUnit
 
 type RenderTest(output: ITestOutputHelper) =
@@ -138,7 +137,7 @@ type RenderTest(output: ITestOutputHelper) =
     [<Fact>]
     member this.``render Guid test``() =
         let x = Guid("936da01f-9abd-4d9d-80c7-02af85c822a8") //Guid.NewGuid()
-        let y = Render.serialize x
+        let y = Render.stringify x
         Should.equal y "Guid(\"936da01f-9abd-4d9d-80c7-02af85c822a8\")"
         let y0 = x.ToString()
         Should.equal y0 "936da01f-9abd-4d9d-80c7-02af85c822a8"
@@ -150,9 +149,9 @@ type RenderTest(output: ITestOutputHelper) =
 
         let ls = [x;ni]
 
-        let resx = Render.stringifyNullableType typeof<Nullable<int>> x
-        let resn = Render.stringifyNullableType typeof<Nullable<_>> ni
-        let resl = Render.stringifyNullableType typeof<Nullable<int> list> ls
+        let resx = Render.stringify<Nullable<int>> x
+        let resn = Render.stringify<Nullable<_>> ni
+        let resl = Render.stringify<Nullable<int> list> ls
 
         Assert.Equal("Nullable 3",resx)
         Assert.Equal("Nullable()",resn)

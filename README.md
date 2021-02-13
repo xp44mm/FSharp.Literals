@@ -15,14 +15,14 @@ You can also use the graphical library package manager ("Manage NuGet Packages f
 
 ## Get Started
 
-The basic usage:
+The basic usage is just `Render.stringify<'t> (obj:'t)`:
 
 ```F#
 open FSharp.Literals
-Render.serialize ([1], [true])
+Render.stringify ([1], [true])
 ```
 
-result: 
+result is F# source code, it can be pasted directly into F# files.
 
 ```F#
 [1], [true]

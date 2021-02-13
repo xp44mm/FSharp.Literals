@@ -1,4 +1,4 @@
-﻿namespace FSharp.Literals.Test
+﻿namespace FSharp.Literals
 
 open Xunit
 open Xunit.Abstractions

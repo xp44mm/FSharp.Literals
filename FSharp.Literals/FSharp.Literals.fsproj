@@ -7,14 +7,15 @@
 		<Description>stringify structural types using the syntax of F# source code.</Description>
 		<RepositoryUrl>https://github.com/xp44mm/FSharp.Literals</RepositoryUrl>
 		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-		<AssemblyVersion>2.0.6.0</AssemblyVersion>
-		<FileVersion>2.0.6.0</FileVersion>
-		<Version>2.0.6</Version>
+		<AssemblyVersion>2.0.7.0</AssemblyVersion>
+		<FileVersion>2.0.7.0</FileVersion>
+		<Version>2.0.7</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
 		<RepositoryType>F#</RepositoryType>
-		<PackageReleaseNotes>add DBNull.</PackageReleaseNotes>
+		<PackageReleaseNotes>Render.stringify&lt;_&gt; value</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/xp44mm/FSharp.Literals</PackageProjectUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

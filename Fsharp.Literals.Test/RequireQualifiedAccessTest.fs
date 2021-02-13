@@ -1,8 +1,7 @@
-﻿namespace FSharp.Literals.Test
+﻿namespace FSharp.Literals
 
 open Xunit
 open Xunit.Abstractions
-open FSharp.Literals
 
 [<RequireQualifiedAccess>]
 type Align = 
