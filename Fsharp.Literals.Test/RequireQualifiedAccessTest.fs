@@ -38,7 +38,6 @@ type RequireQualifiedAccessTest(output: ITestOutputHelper) =
 
     [<Fact>]
     member this.``render RQ test``() =
-        //let x = [RQ.Zero;RQ.One RQ.Zero;RQ.Two(RQ.Zero,RQ.Zero);]
         let x = RQ.Zero
         let y = ParenRender.stringify x
         output.WriteLine(y)

@@ -11,8 +11,6 @@
 
 		<Compile Include="IEqualityComparerTest.fs" />
 
-		<Compile Include="DiscriminatedUnionTest.fs" />
-
 		<Compile Include="RequireQualifiedAccessTest.fs" />
 
 		<Compile Include="ReaderTest.fs" />
@@ -29,7 +27,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="1.3.0">
+		<PackageReference Include="coverlet.collector" Version="3.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -40,7 +38,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="4.7.2" />
+		<PackageReference Update="FSharp.Core" Version="5.0.1" />
 	</ItemGroup>
 
 </Project>

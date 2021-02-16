@@ -3,6 +3,7 @@
 open System
 open System.Globalization
 open FSharp.Reflection
+open FSharp.Idioms
 
 let decimalpoint (s:string) =
     if s.Contains "." || s.Contains "E" || s.Contains "e" then
@@ -11,20 +12,17 @@ let decimalpoint (s:string) =
         s + ".0"
 
 //注意不加括號環境優先級設爲0，必加括號環境優先級設爲最高
-let highest = 999
-
-//todo:智能加括號，操作符结合性不影响加括号。
 let precedences =
     [
-        ["."]
-        [" "]
-        ["|||"]
-        [","]
         [";"]
+        [","]
+        ["|||"]
+        [" "]
+        ["."]
     ]
     |> List.mapi(fun i ls ->
         ls
-        |> List.map(fun sym -> sym,(highest - i * 10))
+        |> List.map(fun sym -> sym,(i+1)*10)
     )
     |> List.concat
     |> Map.ofList
@@ -148,8 +146,9 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
 
     elif ty.IsEnum then
         if ty.IsDefined(typeof<FlagsAttribute>,false) then
-            let reader = Readers.flagsReader ty
+            let reader = EnumType.readFlags ty
             reader value
+            |> Array.map(fun enm -> sprintf "%s.%s" ty.Name enm )
             |> String.concat "|||"
             |> putparen precContext precedences.["|||"]
         else
@@ -166,59 +165,53 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
             |> sprintf "Nullable %s"
         |> putparen precContext precedences.[" "]
     elif ty.IsArray && ty.GetArrayRank() = 1 then
-        let reader = Readers.arrayReader ty
-        let elements = reader value
-        let elemType = ty.GetElementType()
+        let reader = ArrayType.readArray ty
+        let elemType, elements = reader value
 
         arrayToString elemType elements
         |> sprintf "[|%s|]"  //一定無需加括號
 
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<List<_>> then
-        let reader = Readers.listReader ty
-        let elements = reader value
-        let elemType = ty.GenericTypeArguments.[0]
+        let reader = ListType.readList ty
+        let elemType, elements = reader value
 
         arrayToString elemType elements
         |> sprintf "[%s]" //一定無需加括號
 
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Set<_>> then
-        let reader = Readers.setReader ty
-        let elements = reader value
-        if elements.Length = 0 then
+        let reader = SetType.readSet ty
+        let elementType, elements = reader value
+        if  Array.isEmpty elements then
             "Set.empty"
         else
-            let elementType = ty.GenericTypeArguments.[0]
-
             arrayToString elementType elements
             |> fun content ->
                 String.Format("set [{0}]",content)
             |> putparen precContext precedences.[" "]
 
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Map<_,_>> then 
-        let reader = Readers.mapReader ty
-        let elements = reader value
-        if elements.Length = 0 then
+        let reader = MapType.readMap ty
+        let tupleType, elements = reader value
+        if Array.isEmpty elements then
             "Map.empty"
         else
-            let tupleType = FSharpType.MakeTupleType(ty.GenericTypeArguments)
-
             arrayToString tupleType elements
             |> fun content ->
                 String.Format("Map.ofList [{0}]",content)
             |> putparen precContext precedences.[" "]
 
     elif FSharpType.IsTuple ty then
-        let reader = Readers.tupleReader ty
-        let elements = reader value
-        let elementTypes = FSharpType.GetTupleElements(ty)
-
-        Array.zip elementTypes elements
-        |> tupleToString
+        let reader = TupleType.readTuple ty
+        let fields = reader value
+                
+        tupleToString fields
         |> putparen precContext precedences.[","]
 
     elif FSharpType.IsUnion ty then
-        let reader = DiscriminatedUnion.unionReader ty
+        let reader = UnionType.readUnion ty
         let name,fields = reader value
+        let qa = UnionType.getQualifiedAccess ty
+        let name = qa + name
 
         match fields with
         | [||] -> name
@@ -233,13 +226,17 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
             |> putparen precContext precedences.[" "]
 
     elif FSharpType.IsRecord ty then
-        let reader = Readers.recordReader ty
+        let reader = RecordType.readRecord ty
         let fields = reader value
 
         fields
-        |> Array.map(fun(nm,tp,value)->
-            let nm = if StringUtils.isIdentifier nm then nm else String.Format("``{0}``",nm)
-            let value = instanceToString 0 tp value
+        |> Array.map(fun(pi,value)->
+            let nm = 
+                if StringUtils.isIdentifier pi.Name then 
+                    pi.Name 
+                else String.Format("``{0}``",pi.Name)
+
+            let value = instanceToString 0 pi.PropertyType value
             String.Format("{0}={1}",nm,value)
         )
         |> String.concat ";"

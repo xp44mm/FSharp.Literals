@@ -3,55 +3,7 @@
 open Xunit
 open Xunit.Abstractions
 
-open System.Reflection
-open Microsoft.FSharp.Reflection
-
 type ReaderTest(output: ITestOutputHelper) =
-    [<Fact>]
-    member this.``get fsharp modules``() =
-        let fsharpAssem = Assembly.Load("FSharp.Core")
-        output.WriteLine(fsharpAssem.FullName)
-
-        fsharpAssem.GetExportedTypes()
-        |> Array.filter(fun ty -> FSharpType.IsModule ty)
-        |> Array.map(fun ty -> ty.FullName)
-        |> String.concat "\n"
-        |> output.WriteLine
-
-
-    [<Fact>]
-    member this.``get ToArray``() =
-        let fsharpAssembly = Assembly.Load("FSharp.Core")
-
-        let setModuleType = fsharpAssembly.GetType("Microsoft.FSharp.Collections.SetModule")
-
-        let ty = typeof<Set<int>>
-        let elementType = ty.GenericTypeArguments.[0]
-        let mToArray = (setModuleType.GetMethod "ToArray").MakeGenericMethod(elementType)
-
-        let a = Set.ofList [1;2;3] |> box
-
-        let b = mToArray.Invoke(null,[|a|])
-
-        ParenRender.stringify b
-        |> output.WriteLine
-
-    [<Fact>]
-    member this.``get map reader``() =
-        let mToArrayDef = Readers.mapModuleType.GetMethod "ToArray"
-
-        let ty = typeof<Map<string,int>>
-
-        let typeArguments = ty.GenericTypeArguments
-
-        let mToArray = mToArrayDef.MakeGenericMethod(typeArguments)
-
-        let a = Map.ofList ["1",1;"2",2;"3", 3]
-
-        let b = mToArray.Invoke(null,[|a|])
-
-        ParenRender.stringify b
-        |> output.WriteLine
 
     [<Fact>]
     member this.``get seq reader``() =
