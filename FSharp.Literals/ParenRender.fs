@@ -96,11 +96,11 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
 
     elif ty = typeof<char> then
         unbox<char> value
-        |> StringUtils.toCharLiteral
+        |> StringLiteral.toCharLiteral
 
     elif ty = typeof<string> then
         unbox<string> value
-        |> StringUtils.toStringLiteral
+        |> StringLiteral.toStringLiteral
 
     elif ty = typeof<DBNull> || DBNull.Value.Equals value then
         "DBNull.Value"
@@ -232,7 +232,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         fields
         |> Array.map(fun(pi,value)->
             let nm = 
-                if StringUtils.isIdentifier pi.Name then 
+                if StringUtils.isIdentifier pi.Name then
                     pi.Name 
                 else String.Format("``{0}``",pi.Name)
 

@@ -7,14 +7,14 @@
 		<Description>stringify structural types using the syntax of F# source code.</Description>
 		<RepositoryUrl>https://github.com/xp44mm/FSharp.Literals</RepositoryUrl>
 		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-		<AssemblyVersion>2.0.8.0</AssemblyVersion>
-		<FileVersion>2.0.8.0</FileVersion>
-		<Version>2.0.8</Version>
+		<AssemblyVersion>2.0.9.0</AssemblyVersion>
+		<FileVersion>2.0.9.0</FileVersion>
+		<Version>2.0.9</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
 		<RepositoryType>F#</RepositoryType>
-		<PackageReleaseNotes>Render.stringify&lt;_&gt; value</PackageReleaseNotes>
+		<PackageReleaseNotes>add parse primitive type literals.</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/xp44mm/FSharp.Literals</PackageProjectUrl>
 	</PropertyGroup>
 
@@ -23,11 +23,14 @@
 		<Compile Include="Readers.fs" />
 		<Compile Include="ParenRender.fs" />
 		<Compile Include="Render.fs" />
+		<Compile Include="PrimitiveType.fs" />
+		<Compile Include="ParseInteger.fs" />
+		<Compile Include="PrimitiveParser.fs" />
 
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FSharp.Idioms" Version="1.1.6" />
+	  <PackageReference Include="FSharp.Idioms" Version="1.1.7" />
 	</ItemGroup>
 
 	<ItemGroup>
