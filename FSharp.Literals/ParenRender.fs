@@ -96,11 +96,11 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
 
     elif ty = typeof<char> then
         unbox<char> value
-        |> StringLiteral.toCharLiteral
+        |> StringUtils.toCharLiteral
 
     elif ty = typeof<string> then
         unbox<string> value
-        |> StringLiteral.toStringLiteral
+        |> StringUtils.toStringLiteral
 
     elif ty = typeof<DBNull> || DBNull.Value.Equals value then
         "DBNull.Value"

@@ -3,119 +3,53 @@
 open System
 open System.Text.RegularExpressions
 open System.Globalization
-
-//let private nonprintablePairs =
-//    [
-//        '\\'    , "\\\\"
-//        '\t'    , "\\t"
-//        '\n'    , "\\n"
-//        '\r'    , "\\r"
-//        '\f'    , "\\f"
-//        '\b'    , "\\b"
-//        '\u0000', "\\u0000" // Null char
-//        '\u0085', "\\u0085" // Next Line
-//        '\u2028', "\\u2028" // Line Separator
-//        '\u2029', "\\u2029" // Paragraph Separator
-//    ]
-
-//let private charEscapings =
-//    ('\'' , @"\'") :: nonprintablePairs
-//    |> Map.ofList
-
-///// ['s'] -> "s"
-//let private stringEscapings =
-//    ('"' , "\\\"") :: nonprintablePairs
-//    |> Map.ofList
-
-//let private charUnescapings =
-//    charEscapings
-//    |> Map.toSeq
-//    |> Seq.map(fun(x,y)->y,x)
-//    |> Map.ofSeq
-
-///// ["s"] -> 's'
-//let private stringUnescapings =
-//    stringEscapings
-//    |> Map.toSeq
-//    |> Seq.map(fun(x,y)->y,x)
-//    |> Map.ofSeq
-
-///// c -> 'c'
-//let toCharLiteral (c:char) =
-//    if charEscapings.ContainsKey c then
-//        charEscapings.[c]
-//    else
-//        c.ToString(CultureInfo.InvariantCulture)
-//    |> sprintf "'%s'"
-
-///// xyz -> "xyz"
-//let toStringLiteral (value:string) =
-//    value.ToCharArray()
-//    |> Array.map(fun c ->
-//        if stringEscapings.ContainsKey c then
-//            stringEscapings.[c]
-//        else
-//            c.ToString(CultureInfo.InvariantCulture)
-//    )
-//    |> String.concat ""
-//    |> fun s -> "\"" + s + "\""
-
-//let private tryPrefix (pattern:string) inp =
-//    let re = Regex (String.Format("^(?:{0})", pattern))
-//    let m = re.Match(inp)
-//    if m.Success then
-//        Some(m.Value,inp.[m.Value.Length..])
-//    else
-//        None
-
-/////输入字符串的前缀子字符串符合给定的模式
-//let (|Prefix|_|) = tryPrefix
-
-/////匹配输入字符串的第一个字符，返回剩余字符串
-//let (|PrefixChar|_|) (c:char) (inp:string) =
-//    if inp.[0] = c then
-//        Some inp.[1..]
-//    else
-//        None
-
-///// 解析4位16进制unicode表示的字符：\uffff
-//let parseCode (literal:string) =
-//    let hex = Convert.ToUInt32(literal.[2..], 16)
-//    Convert.ToChar hex
-
-///// 'c' -> c
-//let parseCharLiteral (quotedString:string) =
-//    let content = quotedString.[1..quotedString.Length-2]//去掉首尾包围的引号
-//    if charUnescapings.ContainsKey content then
-//        charUnescapings.[content]
-//    elif content.StartsWith @"\u" then
-//        parseCode content
-//    else
-//        content.[0]
-
-///// "xyz" -> xyz
-//let parseStringLiteral (quotedString:string) =
-//    let rec loop inp =
-//        seq {
-//            match inp with
-//            | "" -> ()
-
-//            | Prefix """\\["bfnrt\\]""" (x,rest) ->
-//                yield stringUnescapings.[x]
-//                yield! loop rest
-
-//            | Prefix """\\u[0-9a-fA-F]{4}""" (x,rest) ->
-//                yield parseCode x
-//                yield! loop rest
-
-//            | _ ->
-//                yield inp.[0]
-//                yield! loop inp.[1..]
-//        }
-//    //去掉首尾包围的引号
-//    let content = quotedString.[1..quotedString.Length-2]
-//    String(loop content |> Array.ofSeq)
+open FSharp.Idioms.StringOps
 
 ///是否為F#標識符
 let isIdentifier (tok:string) =
     Regex.IsMatch(tok,@"^[\w-[\d]][\w']*$")
+    
+/// xyz -> "xyz"
+let toStringLiteral (value:string) =
+    let needDouble(follower:string) = 
+        match follower with
+        | ""
+        | PrefixChar '"' _ | PrefixChar '\\' _ 
+        | PrefixChar '\b' _ | PrefixChar '\f' _ | PrefixChar '\n' _ | PrefixChar '\r' _ | PrefixChar '\t' _
+        | PrefixChar 'b' _ | PrefixChar 'f' _ | PrefixChar 'n' _ | PrefixChar 'r' _ | PrefixChar 't' _
+        | Prefix @"[0-9A-Za-z]{3,}" _
+        | Prefix @"u[0-9A-Za-z]{4,}" _
+        | Prefix @"U[0-9A-Za-z]{8,}" _
+            -> true
+        | c -> false
+
+    let chars = value.ToCharArray()
+    chars
+    |> Array.mapi(fun i c ->
+        match c with
+        | '\\' -> 
+            if needDouble value.[i+1..] then
+                @"\\"
+            else
+                @"\"
+        | '"' -> "\\\""
+        | '\b' -> @"\b"
+        | '\f' -> @"\f"
+        | '\n' -> @"\n"
+        | '\r' -> @"\r"
+        | '\t' -> @"\t"
+        | c -> c.ToString(CultureInfo.InvariantCulture)
+    )
+    |> String.concat ""
+    |> fun s -> "\"" + s + "\""
+
+/// c -> 'c'
+let toCharLiteral = function
+    | '\\' -> @"'\\'"
+    | '\'' -> @"'\''"
+    | '\b' -> @"'\b'"
+    | '\f' -> @"'\f'"
+    | '\n' -> @"'\n'"
+    | '\r' -> @"'\r'"
+    | '\t' -> @"'\t'"
+    | c -> String [|'\'';c;'\''|]
