@@ -11,30 +11,37 @@ let decimalpoint (s:string) =
     else
         s + ".0"
 
-//注意不加括號環境優先級設爲0，必加括號環境優先級設爲最高
+//优先级高的先计算
 let precedences =
     [
+        []
         [";"]
         [","]
         ["|||"]
         [" "]
         ["."]
+        ["max"]
     ]
     |> List.mapi(fun i ls ->
         ls
-        |> List.map(fun sym -> sym,(i+1)*10)
+        |> List.map(fun sym -> sym,i*10)
     )
     |> List.concat
     |> Map.ofList
-
-let putparen (precContext:int) (precCurrent:int) (expr:string) =
-    if precContext < precCurrent then expr else String.Format("({0})",expr)
 
 ///可能会有Nullable<>時，顯式使用明確的typeof<>提供类型
 let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
     if ty = typeof<bool> then
         let b = unbox<bool> value
         if b then "true" else "false"
+
+    elif ty = typeof<string> then
+        unbox<string> value
+        |> StringUtils.toStringLiteral
+
+    elif ty = typeof<char> then
+        unbox<char> value
+        |> StringUtils.toCharLiteral
 
     elif ty = typeof<sbyte> then
         let value = unbox<sbyte> value
@@ -68,14 +75,6 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         let value = unbox<uint64> value
         Convert.ToString value + "UL"
 
-    elif ty = typeof<nativeint> then
-        let value = unbox<nativeint> value
-        Convert.ToString value + "n"
-
-    elif ty = typeof<unativeint> then
-        let value = unbox<unativeint> value
-        Convert.ToString value + "un"
-
     elif ty = typeof<single> then
         let value = unbox<single> value
         let s = value.ToString("R", CultureInfo.InvariantCulture) // "G9"
@@ -90,17 +89,17 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         let value = unbox<decimal> value
         Convert.ToString value + "M"
 
+    elif ty = typeof<nativeint> then
+        let value = unbox<nativeint> value
+        Convert.ToString value + "n"
+
+    elif ty = typeof<unativeint> then
+        let value = unbox<unativeint> value
+        Convert.ToString value + "un"
+
     elif ty = typeof<bigint> then
         let value = unbox<bigint> value
         Convert.ToString value + "I"
-
-    elif ty = typeof<char> then
-        unbox<char> value
-        |> StringUtils.toCharLiteral
-
-    elif ty = typeof<string> then
-        unbox<string> value
-        |> StringUtils.toStringLiteral
 
     elif ty = typeof<DBNull> || DBNull.Value.Equals value then
         "DBNull.Value"
@@ -117,7 +116,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         |> List.map(fun i -> i.ToString())
         |> String.concat ","
         |> sprintf "TimeSpan(%s)"
-        |> putparen precContext precedences.[" "]
+        |> StringUtils.putparen precContext precedences.[" "]
 
     elif ty = typeof<DateTimeOffset> then
         let thisDate = unbox<DateTimeOffset> value
@@ -133,7 +132,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         ]
         |> String.concat ","
         |> sprintf "DateTimeOffset(%s)"
-        |> putparen precContext precedences.[" "]
+        |> StringUtils.putparen precContext precedences.[" "]
 
     elif ty = typeof<DateTime> then
         let dt = unbox<DateTime> value
@@ -142,7 +141,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
     elif ty = typeof<Guid> then
         let id = unbox<Guid> value
         sprintf "Guid(\"%s\")" <| id.ToString()
-        |> putparen precContext precedences.[" "]
+        |> StringUtils.putparen precContext precedences.[" "]
 
     elif ty.IsEnum then
         if ty.IsDefined(typeof<FlagsAttribute>,false) then
@@ -150,11 +149,11 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
             reader value
             |> Array.map(fun enm -> sprintf "%s.%s" ty.Name enm )
             |> String.concat "|||"
-            |> putparen precContext precedences.["|||"]
+            |> StringUtils.putparen precContext precedences.["|||"]
         else
             Enum.GetName(ty,value)
             |> sprintf "%s.%s" ty.Name
-            |> putparen precContext precedences.["."]
+            |> StringUtils.putparen precContext precedences.["."]
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Nullable<_>> then
         if value = null then
             "Nullable()"
@@ -163,7 +162,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
 
             instanceToString precedences.[" "] underlyingType value
             |> sprintf "Nullable %s"
-        |> putparen precContext precedences.[" "]
+        |> StringUtils.putparen precContext precedences.[" "]
     elif ty.IsArray && ty.GetArrayRank() = 1 then
         let reader = ArrayType.readArray ty
         let elemType, elements = reader value
@@ -187,7 +186,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
             arrayToString elementType elements
             |> fun content ->
                 String.Format("set [{0}]",content)
-            |> putparen precContext precedences.[" "]
+            |> StringUtils.putparen precContext precedences.[" "]
 
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Map<_,_>> then 
         let reader = MapType.readMap ty
@@ -198,14 +197,14 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
             arrayToString tupleType elements
             |> fun content ->
                 String.Format("Map.ofList [{0}]",content)
-            |> putparen precContext precedences.[" "]
+            |> StringUtils.putparen precContext precedences.[" "]
 
     elif FSharpType.IsTuple ty then
         let reader = TupleType.readTuple ty
         let fields = reader value
                 
         tupleToString fields
-        |> putparen precContext precedences.[","]
+        |> StringUtils.putparen precContext precedences.[","]
 
     elif FSharpType.IsUnion ty then
         let reader = UnionType.readUnion ty
@@ -218,12 +217,12 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         | [|ftype,field|] ->
             let payload = instanceToString precedences.[" "] ftype field
             if payload.StartsWith("(") then name + payload else name + " " + payload
-            |> putparen precContext precedences.[" "]
+            |> StringUtils.putparen precContext precedences.[" "]
         | _ ->
             fields
             |> tupleToString
             |> sprintf "%s(%s)" name
-            |> putparen precContext precedences.[" "]
+            |> StringUtils.putparen precContext precedences.[" "]
 
     elif FSharpType.IsRecord ty then
         let reader = RecordType.readRecord ty

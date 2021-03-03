@@ -7,15 +7,28 @@ open FSharp.xUnit
 open FSharp.Literals
 
 type StringLiteralTest(output: ITestOutputHelper) =
+    [<Fact>]
+    member this.``escape sequence in string``() =
+        //https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/strings
+        let x = "\a\b\f\n\r\t\v\\\"\'"
+        let y = x.ToCharArray()
+        Should.equal y [|'\a';'\b';'\f';'\n';'\r';'\t';'\v';'\\';'\"';'\'';|]
 
+    [<Fact>]
+    member this.``Quotation mark``() =
+        Should.equal "\"" <| '\"'.ToString()
+        Should.equal "\"" <| '"'.ToString()
+    
+    [<Fact>]
+    member this.``Apostrophe``() =
+        Should.equal '\'' <| "\'".Chars 0
+        Should.equal '\'' <| "'".Chars 0
 
     [<Fact>]
     member this.``toStringLiteral empty``() =
         let x = ""
         let y = StringUtils.toStringLiteral x
         Should.equal y "\"\""
-
-
 
     [<Fact>]
     member this.``toStringLiteral quote``() =
@@ -28,7 +41,7 @@ type StringLiteralTest(output: ITestOutputHelper) =
     member this.``toStringLiteral Escape Characters``() =
         let x = String [|'"';'\\';'\b';'\f';'\n';'\r';'\t';'\\';'w';'\\'|]
         let y = StringUtils.toStringLiteral x
-        Should.equal y <| """ "\"\\\b\f\n\r\t\w\\" """.Trim()
+        Should.equal y <| """ "\"\\\b\f\n\r\t\\w\\" """.Trim()
 
     [<Fact>]
     member this.``toStringLiteral Trigraph``() =

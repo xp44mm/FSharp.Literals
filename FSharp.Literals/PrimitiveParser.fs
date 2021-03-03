@@ -179,9 +179,10 @@ let rec private numberLoop (info:NumberInfo) inp =
 ///匹配输入字符串开始的基元字面量
 let tokenize (inp:string) =
     match inp with
+    //错误，见stringUtils
     | Prefix """(?:"(\\[/'"bfnrt\\]|\\[0-9a-fA-F]{3}|\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8}|[^\\"])*")""" (lexeme,rest) ->
         STRING(StringLiteral.parseStringLiteral lexeme)
-
+    //错误，见stringUtils
     | Prefix @"'(\\[\\'bfnrt]|\\u[0-9a-fA-F]{4}|[^\\'])'" (lexeme,rest) ->
         CHAR(StringLiteral.parseCharLiteral lexeme)
 

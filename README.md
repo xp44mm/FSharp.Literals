@@ -15,7 +15,9 @@ You can also use the graphical library package manager ("Manage NuGet Packages f
 
 ## Get Started
 
-The basic usage is just `Render.stringify<'t> (obj:'t)`:
+### print value
+
+The basic usage is `Render.stringify<'t> (obj:'t)`:
 
 ```F#
 open FSharp.Literals
@@ -26,4 +28,24 @@ result is F# source code, it can be pasted directly into F# files.
 
 ```F#
 [1], [true]
+```
+
+### print type
+
+The basic usage is `Render.printTypeObj (ty:Type)`:
+
+```F#
+open FSharp.Literals
+
+let ty = typeof<(string*int)*(float*bool)>
+let y = Render.printTypeObj ty
+Should.equal y "(string*int)*(float*bool)"
+
+```
+
+You can also use shortcut methods same as this mothod
+
+```F#
+let y = Render.printType<(string*int)*(float*bool)>
+Should.equal y "(string*int)*(float*bool)"
 ```
