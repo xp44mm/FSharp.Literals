@@ -240,6 +240,11 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         )
         |> String.concat ";"
         |> sprintf "{%s}"
+
+    elif ty = typeof<Type> then
+        TypeRender.printParen TypeRender.printers 0 (unbox<Type>value)
+        |> sprintf "typeof<%s>"
+
     elif value = null then
         "null" //没有类型信息，null,nullable,None都打印成null
     elif ty = typeof<obj> && value.GetType() <> typeof<obj> then

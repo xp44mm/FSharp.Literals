@@ -231,3 +231,10 @@ type RenderTest(output: ITestOutputHelper) =
         let none = RegexOptions.None
         let res = ParenRender.stringifyNullableType (typeof<RegexOptions>.GetEnumUnderlyingType()) none
         Should.equal res "0"
+
+    [<Fact>]
+    member this.``render type test``() =
+        let ty = typeof<RegexOptions>
+        let res = Render.stringify ty
+        Should.equal res "typeof<RegexOptions>"
+
