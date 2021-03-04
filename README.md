@@ -1,11 +1,11 @@
 # FSharp.Literals
 
-This code uses .NET and F# reflection to walk the structure of values so as to build a formatted representation of the value. You format structural types such as lists and tuples using the syntax of F# source code. Unrecognized values are formatted by calling the F# `sprintf "%A"` method for these values.
+To print F# types and values using the syntax of F# source code.
 
 
 ## Getting FSharp.Literals over NuGet
 
-The simplest way of integrating FSharp.Literals to your project is by using NuGet. You can install FSharp.Literals by opening the package manager console (PM) and typing in the following statement:
+The simplest way of integrating `FSharp.Literals` to your project is by using NuGet. You can install library by opening the package manager console (PM) and typing in the following statement:
 
 ```
 Install-Package FSharp.Literals
@@ -30,6 +30,8 @@ result is F# source code, it can be pasted directly into F# files.
 [1], [true]
 ```
 
+This code uses .NET and F# reflection to walk the structure of values so as to build a formatted representation of the value. You format structural types such as lists and tuples using the syntax of F# source code. Unrecognized values are formatted by calling the F# `sprintf "%A"` method for these values.
+
 ### print type
 
 The basic usage is `Render.printTypeObj (ty:Type)`:
@@ -43,9 +45,11 @@ Should.equal y "(string*int)*(float*bool)"
 
 ```
 
-You can also use shortcut methods same as this mothod
+You can also use shortcut methods same as this method:
 
 ```F#
 let y = Render.printType<(string*int)*(float*bool)>
 Should.equal y "(string*int)*(float*bool)"
 ```
+
+to print F# types using the syntax of F# source code. In order to please the C#-programmers, it's all this `list<int>` style instead of `int list`. You can also re-implement `TypePrinter` interfaces to custom printed result in your styles.
