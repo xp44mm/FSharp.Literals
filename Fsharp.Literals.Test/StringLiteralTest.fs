@@ -31,6 +31,30 @@ type StringLiteralTest(output: ITestOutputHelper) =
         Should.equal y "\"\""
 
     [<Fact>]
+    member this.``toStringLiteral null char``() =
+        let x = "\u0000"
+        let y = StringUtils.toStringLiteral x
+        Should.equal y @"""\u0000"""
+
+    [<Fact>]
+    member this.``toCharLiteral null char``() =
+        let x = '\u0000'
+        let y = StringUtils.toCharLiteral x
+        Should.equal y @"'\u0000'"
+
+    [<Fact>]
+    member this.``toStringLiteral Unit Separator``() =
+        let x = "\u001f"
+        let y = StringUtils.toStringLiteral x
+        Should.equal y @"""\u001f"""
+
+    [<Fact>]
+    member this.``toCharLiteral Unit Separator``() =
+        let x = '\u001f'
+        let y = StringUtils.toCharLiteral x
+        Should.equal y @"'\u001f'"
+
+    [<Fact>]
     member this.``toStringLiteral quote``() =
         let x = "\""
         let y = StringUtils.toStringLiteral x

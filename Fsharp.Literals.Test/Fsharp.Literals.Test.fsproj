@@ -9,6 +9,8 @@
 
 	<ItemGroup>
 
+		<Compile Include="FSharpEscapeSequenceTest.fs" />
+
 		<Compile Include="StringLiteralTest.fs" />
 
 		<Compile Include="IEqualityComparerTest.fs" />
