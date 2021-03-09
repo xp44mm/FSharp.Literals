@@ -1,7 +1,6 @@
 # FSharp.Literals
 
-To print F# types and values using the syntax of F# source code.
-
+This package is used to print values and types using the syntax of F# source code.
 
 ## Getting FSharp.Literals over NuGet
 
