@@ -9,7 +9,7 @@ let isIdentifier (tok:string) =
     Regex.IsMatch(tok,@"^[\w-[\d]][\w']*$")
     
 /// unprintable control codes -> utf-16 | else -> directly map
-let ordinaryCharToLiteral (c:Char) =
+let toUtf16 (c:Char) =
     match int c with 
     | charCode when charCode < 16 ->
         "\\u000" + Convert.ToString(charCode,16)
@@ -22,8 +22,8 @@ let toStringLiteral (value:string) =
     value.ToCharArray()
     |> Array.mapi(fun i c ->
         match c with
-        | '\"' -> @"\"""
         | '\\' -> @"\\"
+        | '\"' -> @"\"""
         | '\a' -> @"\a"
         | '\b' -> @"\b"
         | '\t' -> @"\t"
@@ -31,7 +31,7 @@ let toStringLiteral (value:string) =
         | '\v' -> @"\v"
         | '\f' -> @"\f"
         | '\r' -> @"\r"
-        | c -> ordinaryCharToLiteral c
+        | c -> toUtf16 c
     )
     |> String.concat ""
     |> sprintf "\"%s\""
@@ -39,8 +39,8 @@ let toStringLiteral (value:string) =
 /// c -> 'c'
 let toCharLiteral c = 
     match c with
-    | '\'' -> @"\'"
     | '\\' -> @"\\"
+    | '\'' -> @"\'"
     | '\a' -> @"\a"
     | '\b' -> @"\b"
     | '\t' -> @"\t"
@@ -48,7 +48,7 @@ let toCharLiteral c =
     | '\v' -> @"\v"
     | '\f' -> @"\f"
     | '\r' -> @"\r"
-    | c -> ordinaryCharToLiteral c
+    | c -> toUtf16 c
     |> sprintf "'%s'"
 
 //表达式不加括號環境優先級設爲0，必加括號環境優先級設爲一个肯定是最大的数字

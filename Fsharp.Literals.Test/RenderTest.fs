@@ -181,10 +181,10 @@ type RenderTest(output: ITestOutputHelper) =
     member this.``render map test``() =
         Assert.Equal(ParenRender.stringify Map.empty, "Map.empty")
 
-        let ls = Map.ofList ["1",1;"2",2;"3", 3]
+        let ls = Map ["1",1;"2",2;"3", 3]
         let res = ParenRender.stringify ls
 
-        Assert.Equal("""Map.ofList ["1",1;"2",2;"3",3]""",res)
+        Assert.Equal("""Map ["1",1;"2",2;"3",3]""",res)
     [<Fact>]
     member this.``render tuple test``() =
         let ls = ([1;2;3],"x")

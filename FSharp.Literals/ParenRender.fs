@@ -196,7 +196,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         else
             arrayToString tupleType elements
             |> fun content ->
-                String.Format("Map.ofList [{0}]",content)
+                String.Format("Map [{0}]",content)
             |> StringUtils.putparen precContext precedences.[" "]
 
     elif FSharpType.IsTuple ty then

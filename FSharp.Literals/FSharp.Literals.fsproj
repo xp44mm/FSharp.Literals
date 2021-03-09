@@ -4,17 +4,17 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Authors>xp44m</Authors>
 		<Company>34696643@qq.com</Company>
-		<Description>print F# types and values using the syntax of F# source code.</Description>
+		<Description>Print values and types using the syntax of F# source code.</Description>
 		<RepositoryUrl>https://github.com/xp44mm/FSharp.Literals</RepositoryUrl>
 		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-		<AssemblyVersion>2.1.2.0</AssemblyVersion>
-		<FileVersion>2.1.2.0</FileVersion>
-		<Version>2.1.2</Version>
+		<AssemblyVersion>2.1.3.0</AssemblyVersion>
+		<FileVersion>2.1.3.0</FileVersion>
+		<Version>2.1.3</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
 		<RepositoryType></RepositoryType>
-		<PackageReleaseNotes>string literal control chars.</PackageReleaseNotes>
+		<PackageReleaseNotes>`Map.ofList` -&gt; `Map`</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/xp44mm/FSharp.Literals</PackageProjectUrl>
 		<Copyright>xp44mm</Copyright>
 	</PropertyGroup>
