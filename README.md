@@ -55,5 +55,6 @@ Should.equal y "(string*int)*(float*bool)"
 to print F# types using the syntax of F# source code. In order to please the C#-programmers, it's all this `list<int>` style instead of `int list`. You can also re-implement `TypePrinter` interfaces to custom printed result in your styles.
 
 
-
 > **Note**: `Should.equal` in library `FSharp.xUnit`.
+
+> The JSON format is a common format for exchanging data. You can use the NuGet package `FSharpCompiler.Json` to serialize the F# data.
