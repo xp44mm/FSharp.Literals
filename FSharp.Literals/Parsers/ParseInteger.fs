@@ -1,4 +1,4 @@
-﻿module FSharp.Literals.ParseInteger
+﻿module FSharp.Literals.Parsers.ParseInteger
 
 let digits = [| '0' .. '9' |] 
 

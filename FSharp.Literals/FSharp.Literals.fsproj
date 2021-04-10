@@ -4,17 +4,17 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Authors>xp44m</Authors>
 		<Company>34696643@qq.com</Company>
-		<Description>Print values and types using the syntax of F# source code.</Description>
+		<Description>This package is used to print values and types as their appears in F# source code. it also provide a function to get default value from type info.</Description>
 		<RepositoryUrl>https://github.com/xp44mm/FSharp.Literals</RepositoryUrl>
 		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-		<AssemblyVersion>2.1.3.0</AssemblyVersion>
-		<FileVersion>2.1.3.0</FileVersion>
-		<Version>2.1.3</Version>
+		<AssemblyVersion>2.2.0.0</AssemblyVersion>
+		<FileVersion>2.2.0.0</FileVersion>
+		<Version>2.2.0</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
 		<RepositoryType></RepositoryType>
-		<PackageReleaseNotes>`Map.ofList` -&gt; `Map`</PackageReleaseNotes>
+		<PackageReleaseNotes>Literal.defaultValue</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/xp44mm/FSharp.Literals</PackageProjectUrl>
 		<Copyright>xp44mm</Copyright>
 	</PropertyGroup>
@@ -25,9 +25,28 @@
 		<Compile Include="TypeRender.fs" />
 		<Compile Include="ParenRender.fs" />
 		<Compile Include="Render.fs" />
-		<Compile Include="PrimitiveType.fs" />
-		<Compile Include="ParseInteger.fs" />
-		<Compile Include="PrimitiveParser.fs" />
+		<Compile Include="Parsers\PrimitiveType.fs" />
+		<Compile Include="Parsers\ParseInteger.fs" />
+		<Compile Include="Parsers\PrimitiveParser.fs" />
+		<Compile Include="DefaultValueProviders\DefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\DefaultValueDriver.fs" />
+		<Compile Include="DefaultValueProviders\DateTimeOffsetDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\TimeSpanDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\GuidDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\UriDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\EnumDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\DBNullDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\NullableDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\ArrayDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\TupleDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\OptionDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\ListDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\SetDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\MapDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\UnionDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\RecordDefaultValueProvider.fs" />
+		<Compile Include="DefaultValueProviders\DefaultValueProviders.fs" />
+		<Compile Include="Literal.fs" />
 
 	</ItemGroup>
 

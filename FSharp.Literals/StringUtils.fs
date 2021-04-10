@@ -8,14 +8,14 @@ open System
 let isIdentifier (tok:string) =
     Regex.IsMatch(tok,@"^[\w-[\d]][\w']*$")
     
-/// unprintable control codes -> utf-16 | else -> directly map
-let toUtf16 (c:Char) =
-    match int c with 
-    | charCode when charCode < 16 ->
-        "\\u000" + Convert.ToString(charCode,16)
-    | charCode when charCode < 32 ->
-        "\\u00" + Convert.ToString(charCode,16)
-    | _ -> c.ToString(CultureInfo.InvariantCulture)
+///// unprintable control codes -> utf-16 | else -> directly map
+//let toUtf16 (c:Char) =
+//    match int c with 
+//    | charCode when charCode < 16 ->
+//        "\\u000" + Convert.ToString(charCode,16)
+//    | charCode when charCode < 32 ->
+//        "\\u00" + Convert.ToString(charCode,16)
+//    | _ -> c.ToString(CultureInfo.InvariantCulture)
 
 /// xyz -> "xyz"
 let toStringLiteral (value:string) =
@@ -31,7 +31,9 @@ let toStringLiteral (value:string) =
         | '\v' -> @"\v"
         | '\f' -> @"\f"
         | '\r' -> @"\r"
-        | c -> toUtf16 c
+        | c when c < '\u0010' -> @"\u000" + Convert.ToString(Convert.ToInt16(c),16)
+        | c when c < '\u0020' -> @"\u00" + Convert.ToString(Convert.ToInt16(c),16)
+        | c -> c.ToString(CultureInfo.InvariantCulture)
     )
     |> String.concat ""
     |> sprintf "\"%s\""
@@ -48,7 +50,9 @@ let toCharLiteral c =
     | '\v' -> @"\v"
     | '\f' -> @"\f"
     | '\r' -> @"\r"
-    | c -> toUtf16 c
+    | c when c < '\u0010' -> @"\u000" + Convert.ToString(Convert.ToInt16(c),16)
+    | c when c < '\u0020' -> @"\u00" + Convert.ToString(Convert.ToInt16(c),16)
+    | c -> c.ToString(CultureInfo.InvariantCulture)
     |> sprintf "'%s'"
 
 //表达式不加括號環境優先級設爲0，必加括號環境優先級設爲一个肯定是最大的数字

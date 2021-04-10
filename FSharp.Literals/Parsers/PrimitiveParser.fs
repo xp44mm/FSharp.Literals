@@ -1,4 +1,4 @@
-﻿module FSharp.Literals.PrimitiveParser
+﻿module FSharp.Literals.Parsers.PrimitiveParser
 
 
 open FSharp.Idioms

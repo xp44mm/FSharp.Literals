@@ -9,6 +9,8 @@
 
 	<ItemGroup>
 
+		<Compile Include="AssertEquality.fs" />
+
 		<Compile Include="FSharpEscapeSequenceTest.fs" />
 
 		<Compile Include="StringLiteralTest.fs" />
@@ -21,12 +23,17 @@
 		<Compile Include="RenderTest.fs" />
 		<Compile Include="DateTimeTest.fs" />
 		<Compile Include="PrimitiveParserTest.fs" />
+		<Compile Include="DefaultValueProviders\DefaultValueFallbackTest.fs" />
+		<Compile Include="DefaultValueProviders\RecordTest.fs" />
+		<Compile Include="DefaultValueProviders\UnionTest.fs" />
+		<Compile Include="DefaultValueProviders\MainDefaultValueTest.fs" />
+		
 		<Compile Include="Program.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FSharp.xUnit" Version="1.0.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+		<PackageReference Include="FSharp.xUnit" Version="1.1.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
 		<PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
 			<PrivateAssets>all</PrivateAssets>

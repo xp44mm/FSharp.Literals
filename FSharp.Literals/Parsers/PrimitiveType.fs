@@ -1,8 +1,10 @@
-﻿namespace FSharp.Literals
+﻿namespace FSharp.Literals.Parsers
 
 open System
 open System.Numerics
 
+/// The primitive types are:
+/// Boolean, Byte, SByte, Int16, UInt16, Int32, UInt32, Int64, UInt64, IntPtr, UIntPtr, Char, Double, and Single.
 type PrimitiveType = 
 | STRING     of string
 | CHAR       of char

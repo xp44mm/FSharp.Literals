@@ -138,9 +138,9 @@ type RenderTest(output: ITestOutputHelper) =
     member this.``render Guid test``() =
         let x = Guid("936da01f-9abd-4d9d-80c7-02af85c822a8") //Guid.NewGuid()
         let y = Render.stringify x
-        Should.equal y "Guid(\"936da01f-9abd-4d9d-80c7-02af85c822a8\")"
+        should.equal y "Guid(\"936da01f-9abd-4d9d-80c7-02af85c822a8\")"
         let y0 = x.ToString()
-        Should.equal y0 "936da01f-9abd-4d9d-80c7-02af85c822a8"
+        should.equal y0 "936da01f-9abd-4d9d-80c7-02af85c822a8"
 
     [<Fact>]
     member this.``render nullable test``() =
@@ -189,7 +189,7 @@ type RenderTest(output: ITestOutputHelper) =
     member this.``render tuple test``() =
         let ls = ([1;2;3],"x")
         let res = ParenRender.instanceToString 0 typeof<int list * string> ls
-        Should.equal res "[1;2;3],\"x\""
+        should.equal res "[1;2;3],\"x\""
 
     [<Fact>]
     member this.``render some test``() =
@@ -213,28 +213,28 @@ type RenderTest(output: ITestOutputHelper) =
     member this.``render enum test``() =
         let e = FileMode.Open
         let res = ParenRender.instanceToString 0 typeof<FileMode> e
-        Should.equal res "FileMode.Open"
+        should.equal res "FileMode.Open"
     [<Fact>]
     member this.``render flags enum test``() =
         let flags = BindingFlags.Public ||| BindingFlags.NonPublic
         let res = ParenRender.instanceToString 0 typeof<BindingFlags> flags
-        Should.equal res "BindingFlags.Public|||BindingFlags.NonPublic"
+        should.equal res "BindingFlags.Public|||BindingFlags.NonPublic"
 
     [<Fact>]
     member this.``render flags none enum test``() =
         let none = RegexOptions.None
         let res = ParenRender.instanceToString 0 typeof<RegexOptions> none
-        Should.equal res "RegexOptions.None"
+        should.equal res "RegexOptions.None"
 
     [<Fact>]
     member this.``render enum underlying value test``() =
         let none = RegexOptions.None
         let res = ParenRender.stringifyNullableType (typeof<RegexOptions>.GetEnumUnderlyingType()) none
-        Should.equal res "0"
+        should.equal res "0"
 
     [<Fact>]
     member this.``render type test``() =
         let ty = typeof<RegexOptions>
         let res = Render.stringify ty
-        Should.equal res "typeof<RegexOptions>"
+        should.equal res "typeof<RegexOptions>"
 

@@ -77,6 +77,7 @@ let getGenericTypeName (type_name:string) =
     | "FSharpMap" -> "Map"
     | "IEnumerable" -> "seq"
     | "List" -> "ResizeArray"
+    | "Void" -> "unit"
     | name -> name
 
 let GenericTypeDefinitionPrinter = {
