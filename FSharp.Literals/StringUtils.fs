@@ -7,42 +7,10 @@ open System
 ///是否為F#標識符
 let isIdentifier (tok:string) =
     Regex.IsMatch(tok,@"^[\w-[\d]][\w']*$")
-    
-///// unprintable control codes -> utf-16 | else -> directly map
-//let toUtf16 (c:Char) =
-//    match int c with 
-//    | charCode when charCode < 16 ->
-//        "\\u000" + Convert.ToString(charCode,16)
-//    | charCode when charCode < 32 ->
-//        "\\u00" + Convert.ToString(charCode,16)
-//    | _ -> c.ToString(CultureInfo.InvariantCulture)
 
-/// xyz -> "xyz"
-let toStringLiteral (value:string) =
-    value.ToCharArray()
-    |> Array.mapi(fun i c ->
-        match c with
-        | '\\' -> @"\\"
-        | '\"' -> @"\"""
-        | '\a' -> @"\a"
-        | '\b' -> @"\b"
-        | '\t' -> @"\t"
-        | '\n' -> @"\n"
-        | '\v' -> @"\v"
-        | '\f' -> @"\f"
-        | '\r' -> @"\r"
-        | c when c < '\u0010' -> @"\u000" + Convert.ToString(Convert.ToInt16(c),16)
-        | c when c < '\u0020' -> @"\u00" + Convert.ToString(Convert.ToInt16(c),16)
-        | c -> c.ToString(CultureInfo.InvariantCulture)
-    )
-    |> String.concat ""
-    |> sprintf "\"%s\""
-
-/// c -> 'c'
-let toCharLiteral c = 
+let unescapeChar c =     
     match c with
     | '\\' -> @"\\"
-    | '\'' -> @"\'"
     | '\a' -> @"\a"
     | '\b' -> @"\b"
     | '\t' -> @"\t"
@@ -50,9 +18,23 @@ let toCharLiteral c =
     | '\v' -> @"\v"
     | '\f' -> @"\f"
     | '\r' -> @"\r"
-    | c when c < '\u0010' -> @"\u000" + Convert.ToString(Convert.ToInt16(c),16)
-    | c when c < '\u0020' -> @"\u00" + Convert.ToString(Convert.ToInt16(c),16)
+    | '\u007F' -> @"\u007F"
+    | c when c < '\u0010' -> @"\u000" + Convert.ToString(Convert.ToInt16(c),16).ToUpper()
+    | c when c < '\u0020' -> @"\u00" + Convert.ToString(Convert.ToInt16(c),16).ToUpper()
     | c -> c.ToString(CultureInfo.InvariantCulture)
+
+/// xyz -> "xyz"
+let toStringLiteral (value:string) =
+    value.ToCharArray()
+    |> Array.map(fun c ->
+        if c = '\"' then "\\\"" else unescapeChar c
+    )
+    |> String.concat ""
+    |> sprintf "\"%s\""
+
+/// c -> 'c'
+let toCharLiteral c = 
+    if c = '\'' then @"\'" else unescapeChar c
     |> sprintf "'%s'"
 
 //表达式不加括號環境優先級設爲0，必加括號環境優先級設爲一个肯定是最大的数字

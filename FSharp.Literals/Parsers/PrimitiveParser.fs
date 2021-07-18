@@ -176,24 +176,24 @@ let rec private numberLoop (info:NumberInfo) inp =
                 |> sign
             INT32 ii
 
-///匹配输入字符串开始的基元字面量
-let tokenize (inp:string) =
-    match inp with
-    //错误，见stringUtils
-    | Prefix """(?:"(\\[/'"bfnrt\\]|\\[0-9a-fA-F]{3}|\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8}|[^\\"])*")""" (lexeme,rest) ->
-        STRING(StringLiteral.parseStringLiteral lexeme)
-    //错误，见stringUtils
-    | Prefix @"'(\\[\\'bfnrt]|\\u[0-9a-fA-F]{4}|[^\\'])'" (lexeme,rest) ->
-        CHAR(StringLiteral.parseCharLiteral lexeme)
+/////匹配输入字符串开始的基元字面量
+//let tokenize (inp:string) =
+//    match inp with
+//    //错误，见stringUtils
+//    | Prefix """(?:"(\\[/'"bfnrt\\]|\\[0-9a-fA-F]{3}|\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8}|[^\\"])*")""" (lexeme,rest) ->
+//        STRING(StringLiteral.parseStringLiteral lexeme)
+//    //错误，见stringUtils
+//    | Prefix @"'(\\[\\'bfnrt]|\\u[0-9a-fA-F]{4}|[^\\'])'" (lexeme,rest) ->
+//        CHAR(StringLiteral.parseCharLiteral lexeme)
 
-    | Prefix @"[-+]?\d+" (lexeme,rest) ->
-        let known, flags =
-            match lexeme.[0] with
-            | '-' -> lexeme.[1..], set ['-']
-            | '+' -> lexeme.[1..], set []
-            | _ -> lexeme, set[]
-        numberLoop {known=[known];flags=flags} rest
+//    | Prefix @"[-+]?\d+" (lexeme,rest) ->
+//        let known, flags =
+//            match lexeme.[0] with
+//            | '-' -> lexeme.[1..], set ['-']
+//            | '+' -> lexeme.[1..], set []
+//            | _ -> lexeme, set[]
+//        numberLoop {known=[known];flags=flags} rest
 
-    | never -> failwith never
+//    | never -> failwith never
 
 

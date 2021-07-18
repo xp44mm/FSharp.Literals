@@ -9,6 +9,13 @@ open System.Text.RegularExpressions
 
 type DefaultValueFallbackTest(output: ITestOutputHelper) =
     [<Fact>]
+    member this.``bool test``() =
+        let x = typeof<bool>
+        let y = DefaultValueDriver.defaultValue [] x :?> bool
+        should.equal y false
+
+
+    [<Fact>]
     member this.``char test``() =
         let x = typeof<char>
         let y = DefaultValueDriver.defaultValue [] x :?> char

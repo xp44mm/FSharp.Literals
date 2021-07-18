@@ -6,17 +6,13 @@ The package includes several features for literals:
 
 - To get default value from type info.
 
-## Getting FSharp.Literals over NuGet
-
-The simplest way of integrating `FSharp.Literals` to your project is by using NuGet. You can install library by opening the package manager console (PM) and typing in the following statement:
+## Getting it over NuGet
 
 ```
 Install-Package FSharp.Literals
 ```
 
-You can also use the graphical library package manager ("Manage NuGet Packages for Solution"). Searching for "FSharp.Literals" in the official NuGet online feed will find this library.
-
-## Get Started
+## The main usage
 
 ### print value
 
@@ -65,10 +61,7 @@ Should.equal y "(string*int)*(float*bool)"
 
 to print F# types using the syntax of F# source code. In order to please the C#-programmers, it's all this `list<int>` style instead of `int list`. You can also re-implement `TypePrinter` interfaces to custom printed result in your styles.
 
-
 > **Note**: `Should.equal` in library `FSharp.xUnit`.
-
-> The JSON format is a common format for exchanging data. You can use the NuGet package `FSharpCompiler.Json` to serialize the F# data.
 
 ### default value
 

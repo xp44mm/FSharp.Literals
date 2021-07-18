@@ -4,17 +4,17 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Authors>xp44m</Authors>
 		<Company>34696643@qq.com</Company>
-		<Description>This package is used to print values and types as their appears in F# source code. it also provide a function to get default value from type info.</Description>
+		<Description>This package is used to print values and types as their appears in F# style. it also provide a function to get default value from type info.</Description>
 		<RepositoryUrl>https://github.com/xp44mm/FSharp.Literals</RepositoryUrl>
 		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-		<AssemblyVersion>2.2.0.0</AssemblyVersion>
-		<FileVersion>2.2.0.0</FileVersion>
-		<Version>2.2.0</Version>
+		<AssemblyVersion>2.2.3.0</AssemblyVersion>
+		<FileVersion>2.2.3.0</FileVersion>
+		<Version>2.2.3</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
 		<RepositoryType></RepositoryType>
-		<PackageReleaseNotes>Literal.defaultValue</PackageReleaseNotes>
+		<PackageReleaseNotes>update dependence.</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/xp44mm/FSharp.Literals</PackageProjectUrl>
 		<Copyright>xp44mm</Copyright>
 	</PropertyGroup>
@@ -51,11 +51,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FSharp.Idioms" Version="1.1.8" />
+	  <PackageReference Include="FSharp.Idioms" Version="1.1.10" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="5.0.1" />
+		<PackageReference Update="FSharp.Core" Version="5.0.2" />
 	</ItemGroup>
 
 </Project>

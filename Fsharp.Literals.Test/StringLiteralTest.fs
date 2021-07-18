@@ -44,15 +44,27 @@ type StringLiteralTest(output: ITestOutputHelper) =
 
     [<Fact>]
     member this.``toStringLiteral Unit Separator``() =
-        let x = "\u001f"
+        let x = "\u001F"
         let y = StringUtils.toStringLiteral x
-        should.equal y @"""\u001f"""
+        should.equal y @"""\u001F"""
 
     [<Fact>]
     member this.``toCharLiteral Unit Separator``() =
-        let x = '\u001f'
+        let x = '\u001F'
         let y = StringUtils.toCharLiteral x
-        should.equal y @"'\u001f'"
+        should.equal y @"'\u001F'"
+
+    [<Fact>]
+    member this.``toStringLiteral delete``() =
+        let x = "\u007F"
+        let y = StringUtils.toStringLiteral x
+        should.equal y @"""\u007F"""
+
+    [<Fact>]
+    member this.``toCharLiteral delete``() =
+        let x = '\u007F'
+        let y = StringUtils.toCharLiteral x
+        should.equal y @"'\u007F'"
 
     [<Fact>]
     member this.``toStringLiteral quote``() =
@@ -78,6 +90,7 @@ type StringLiteralTest(output: ITestOutputHelper) =
         let x = "\u00a9"
         let y = StringUtils.toStringLiteral x
         should.equal y "\"©\""
+
 
     [<Fact>]
     member this.``toStringLiteral Long Unicode character``() =
