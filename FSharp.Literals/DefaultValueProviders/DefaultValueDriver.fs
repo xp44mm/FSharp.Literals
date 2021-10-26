@@ -35,7 +35,6 @@ let rec defaultValue (providers:#seq<DefaultValueProvider>) (ty:Type) =
         |> Seq.tryFind(fun provider -> provider.filter ty)
         |> Option.map(fun x -> x.defaultValue)
         |> Option.defaultValue(fun(loop,ty) -> 
-            //Console.WriteLine(Render.stringify ty)
-            defaultValueFallback ty)
-
+            defaultValueFallback ty
+            )
     action(defaultValue providers, ty)

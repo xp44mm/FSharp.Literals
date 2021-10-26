@@ -185,6 +185,13 @@ type RenderTest(output: ITestOutputHelper) =
         let res = ParenRender.stringify ls
 
         Assert.Equal("""Map ["1",1;"2",2;"3",3]""",res)
+
+    [<Fact>]
+    member this.``render HashSet test``() =
+        let ls = System.Collections.Generic.HashSet [1;2;3]
+        let res = ParenRender.stringify ls
+        Assert.Equal("HashSet [1;2;3]",res)
+
     [<Fact>]
     member this.``render tuple test``() =
         let ls = ([1;2;3],"x")

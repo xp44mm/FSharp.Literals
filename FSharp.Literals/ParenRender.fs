@@ -154,6 +154,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
             Enum.GetName(ty,value)
             |> sprintf "%s.%s" ty.Name
             |> StringUtils.putparen precContext precedences.["."]
+
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Nullable<_>> then
         if value = null then
             "Nullable()"
@@ -163,6 +164,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
             instanceToString precedences.[" "] underlyingType value
             |> sprintf "Nullable %s"
         |> StringUtils.putparen precContext precedences.[" "]
+
     elif ty.IsArray && ty.GetArrayRank() = 1 then
         let reader = ArrayType.readArray ty
         let elemType, elements = reader value
@@ -197,6 +199,18 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
             arrayToString tupleType elements
             |> fun content ->
                 String.Format("Map [{0}]",content)
+            |> StringUtils.putparen precContext precedences.[" "]
+
+    elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<System.Collections.Generic.HashSet<_>> then
+        let reader = SeqType.seqReader ty
+        let elements = reader value
+        let elementType = ty.GenericTypeArguments.[0]
+        if  Array.isEmpty elements then
+            "HashSet[]"
+        else
+            arrayToString elementType elements
+            |> fun content ->
+                String.Format("HashSet [{0}]",content)
             |> StringUtils.putparen precContext precedences.[" "]
 
     elif FSharpType.IsTuple ty then
