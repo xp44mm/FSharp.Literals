@@ -256,7 +256,8 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         |> sprintf "{%s}"
 
     elif ty = typeof<Type> then
-        TypeRender.printParen TypeRender.printers 0 (unbox<Type>value)
+        //TypeRender.printParen TypeRender.printers 0 (unbox<Type>value)
+        TypeRender.stringifyParen TypeRender.stringifies 0 (unbox<Type>value)
         |> sprintf "typeof<%s>"
 
     elif value = null then

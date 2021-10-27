@@ -10,6 +10,11 @@ let stringify<'t> (value:'t) =
     let tp = typeof<'t>
     stringifyObj tp value
 
-let printTypeObj (ty:Type) = TypeRender.printParen TypeRender.printers 0 ty
+//let printTypeObj (ty:Type) = TypeRender.printParen TypeRender.printers 0 ty
 
-let printType<'t> = printTypeObj typeof<'t>
+//let printType<'t> = printTypeObj typeof<'t>
+
+
+let stringifyTypeDynamic (ty:Type) = TypeRender.stringifyParen TypeRender.stringifies 0 ty
+
+let stringifyType<'t> = stringifyTypeDynamic typeof<'t>

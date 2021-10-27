@@ -2,9 +2,13 @@
 
 open System
 
-let printTypeDynamic (ty:Type) = TypeRender.printParen TypeRender.printers 0 ty
+//let printTypeDynamic (ty:Type) = TypeRender.printParen TypeRender.printers 0 ty
 
-let printType<'t> = printTypeDynamic typeof<'t>
+//let printType<'t> = printTypeDynamic typeof<'t>
+
+let stringifyTypeDynamic (ty:Type) = TypeRender.stringifyParen TypeRender.stringifies 0 ty
+
+let stringifyType<'t> = stringifyTypeDynamic typeof<'t>
 
 /// print dynamic value
 let stringifyDynamic (ty:Type) (value:obj) = ParenRender.instanceToString 0 ty value
