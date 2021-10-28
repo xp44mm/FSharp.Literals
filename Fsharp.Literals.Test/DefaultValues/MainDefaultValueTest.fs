@@ -1,4 +1,4 @@
-﻿namespace FSharp.Literals.DefaultValueProviders
+﻿namespace FSharp.Literals.DefaultValues
 
 open Xunit
 open Xunit.Abstractions

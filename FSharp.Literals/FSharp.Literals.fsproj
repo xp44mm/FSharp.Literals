@@ -28,24 +28,41 @@
 		<Compile Include="Parsers\PrimitiveType.fs" />
 		<Compile Include="Parsers\ParseInteger.fs" />
 		<Compile Include="Parsers\PrimitiveParser.fs" />
-		<Compile Include="DefaultValueProviders\DefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\DefaultValueDriver.fs" />
-		<Compile Include="DefaultValueProviders\DateTimeOffsetDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\TimeSpanDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\GuidDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\UriDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\EnumDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\DBNullDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\NullableDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\ArrayDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\TupleDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\OptionDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\ListDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\SetDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\MapDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\UnionDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\RecordDefaultValueProvider.fs" />
-		<Compile Include="DefaultValueProviders\DefaultValueProviders.fs" />
+		
+		<Compile Include="DefaultValues\ArrayDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\DateTimeOffsetDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\DBNullDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\EnumDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\GuidDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\ListDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\MapDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\NullableDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\OptionDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\RecordDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\SetDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\TimeSpanDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\TupleDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\UnionDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\UriDefaultValue.fs" />
+
+		<Compile Include="DefaultValues\DefaultValues.fs" />
+
+		<Compile Include="DefaultValues\DefaultValueDriver.fs" />
+
 		<Compile Include="Literal.fs" />
 
 	</ItemGroup>

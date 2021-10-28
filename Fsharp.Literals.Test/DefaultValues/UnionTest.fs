@@ -1,4 +1,4 @@
-﻿namespace FSharp.Literals.DefaultValueProviders
+﻿namespace FSharp.Literals.DefaultValues
 
 open Xunit
 open Xunit.Abstractions
@@ -20,18 +20,18 @@ type UnionTest(output: ITestOutputHelper) =
     [<Fact>]
     member this.``UionExample0``() =
         let x = Zero
-        let y = DefaultValueDriver.defaultValue [UnionDefaultValueProvider.Singleton] typeof<UionExample0> :?> UionExample0
+        let y = DefaultValueDriver.defaultValue [UnionDefaultValue.getDefault] typeof<UionExample0> :?> UionExample0
         should.equal x y 
 
     [<Fact>]
     member this.``UionExample1``() =
         let x = OnlyOne 0
-        let y = DefaultValueDriver.defaultValue [UnionDefaultValueProvider.Singleton] typeof<UionExample1> :?> UionExample1
+        let y = DefaultValueDriver.defaultValue [UnionDefaultValue.getDefault] typeof<UionExample1> :?> UionExample1
         should.equal x y 
 
     [<Fact>]
     member this.``UionExample2``() =
         let x = Pair (0,"")
-        let y = DefaultValueDriver.defaultValue [UnionDefaultValueProvider.Singleton] typeof<UionExample2> :?> UionExample2
+        let y = DefaultValueDriver.defaultValue [UnionDefaultValue.getDefault] typeof<UionExample2> :?> UionExample2
         should.equal x y 
 

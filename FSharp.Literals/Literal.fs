@@ -16,8 +16,8 @@ let stringifyDynamic (ty:Type) (value:obj) = ParenRender.instanceToString 0 ty v
 /// print generic value
 let stringify<'t> (value:'t) = stringifyDynamic typeof<'t> value
 
-open FSharp.Literals.DefaultValueProviders
+open FSharp.Literals.DefaultValues
 
-let defaultValueDynamic (ty:Type) = DefaultValueDriver.defaultValue DefaultValueProviders.providers ty
+let defaultValueDynamic (ty:Type) = DefaultValueDriver.defaultValue DefaultValues.getDefaults ty
 
 let defaultValue<'t> = defaultValueDynamic typeof<'t> :?> 't

@@ -1,4 +1,4 @@
-﻿namespace FSharp.Literals.DefaultValueProviders
+﻿namespace FSharp.Literals.DefaultValues
 
 open Xunit
 open Xunit.Abstractions
@@ -115,82 +115,82 @@ type DefaultValueFallbackTest(output: ITestOutputHelper) =
     [<Fact>]
     member this.``array test``() =
         let x:int[] = [||]
-        let y = DefaultValueDriver.defaultValue [ArrayDefaultValueProvider.Singleton] typeof<int[]> :?> int[]
+        let y = DefaultValueDriver.defaultValue [ArrayDefaultValue.getDefault] typeof<int[]> :?> int[]
         should.equal x y
 
     [<Fact>]
     member this.``tuple test``() =
         let x = 0,0.0,""
-        let y = DefaultValueDriver.defaultValue [TupleDefaultValueProvider.Singleton] typeof<int*float*string> :?> int*float*string
+        let y = DefaultValueDriver.defaultValue [TupleDefaultValue.getDefault] typeof<int*float*string> :?> int*float*string
         should.equal x y
 
     [<Fact>]
     member this.``DBNull test``() =
         let x = DBNull.Value
-        let y = DefaultValueDriver.defaultValue [DBNullDefaultValueProvider.Singleton] typeof<DBNull> :?> DBNull
+        let y = DefaultValueDriver.defaultValue [DBNullDefaultValue.getDefault] typeof<DBNull> :?> DBNull
         should.equal x y
 
     [<Fact>]
     member this.``Nullable test``() =
         let x = Nullable()
-        let y = DefaultValueDriver.defaultValue [NullableDefaultValueProvider.Singleton] typeof<Nullable<int>> :?> Nullable<int>
+        let y = DefaultValueDriver.defaultValue [NullableDefaultValue.getDefault] typeof<Nullable<int>> :?> Nullable<int>
         should.equal x y
 
     [<Fact>]
     member this.``flags test``() =
         let x = BindingFlags.Default
-        let y = DefaultValueDriver.defaultValue [EnumDefaultValueProvider.Singleton] typeof<BindingFlags> :?> BindingFlags
+        let y = DefaultValueDriver.defaultValue [EnumDefaultValue.getDefault] typeof<BindingFlags> :?> BindingFlags
         should.equal x y
 
     [<Fact>]
     member this.``enum test``() =
         let x = RegexOptions.None
-        let y = DefaultValueDriver.defaultValue [EnumDefaultValueProvider.Singleton] typeof<RegexOptions> :?> RegexOptions
+        let y = DefaultValueDriver.defaultValue [EnumDefaultValue.getDefault] typeof<RegexOptions> :?> RegexOptions
         should.equal x y
 
     [<Fact>]
     member this.``guid test``() =
-        let y = DefaultValueDriver.defaultValue [GuidDefaultValueProvider.Singleton] typeof<Guid> :?> Guid
+        let y = DefaultValueDriver.defaultValue [GuidDefaultValue.getDefault] typeof<Guid> :?> Guid
         Assert.IsType<Guid>(y)
 
     [<Fact>]
     member this.``uri test``() =
-        let y = DefaultValueDriver.defaultValue [UriDefaultValueProvider.Singleton] typeof<Uri> :?> Uri
+        let y = DefaultValueDriver.defaultValue [UriDefaultValue.getDefault] typeof<Uri> :?> Uri
         Assert.IsType<Uri>(y)
 
     [<Fact>]
     member this.``datetimeoffset test``() =
-        let y = DefaultValueDriver.defaultValue [DateTimeOffsetDefaultValueProvider.Singleton] typeof<DateTimeOffset> :?> DateTimeOffset
+        let y = DefaultValueDriver.defaultValue [DateTimeOffsetDefaultValue.getDefault] typeof<DateTimeOffset> :?> DateTimeOffset
         Assert.IsType<DateTimeOffset>(y)
 
     [<Fact>]
     member this.``timespan test``() =
         let x = TimeSpan.Zero
-        let y = DefaultValueDriver.defaultValue [TimeSpanDefaultValueProvider.Singleton] typeof<TimeSpan> :?> TimeSpan
+        let y = DefaultValueDriver.defaultValue [TimeSpanDefaultValue.getDefault] typeof<TimeSpan> :?> TimeSpan
         should.equal x y
 
     [<Fact>]
     member this.``option test``() =
         let x = None
-        let y = DefaultValueDriver.defaultValue [OptionDefaultValueProvider.Singleton] typeof<int option> :?> int option
+        let y = DefaultValueDriver.defaultValue [OptionDefaultValue.getDefault] typeof<int option> :?> int option
         should.equal x y
 
     [<Fact>]
     member this.``list test``() =
         let x = []
-        let y = DefaultValueDriver.defaultValue [ListDefaultValueProvider.Singleton] typeof<int list> :?> int list
+        let y = DefaultValueDriver.defaultValue [ListDefaultValue.getDefault] typeof<int list> :?> int list
         should.equal x y
 
     [<Fact>]
     member this.``set test``() =
         let x = Set.empty
-        let y = DefaultValueDriver.defaultValue [SetDefaultValueProvider.Singleton] typeof<int Set> :?> int Set
+        let y = DefaultValueDriver.defaultValue [SetDefaultValue.getDefault] typeof<int Set> :?> int Set
         should.equal x y
 
     [<Fact>]
     member this.``map test``() =
         let x = Map.empty
-        let y = DefaultValueDriver.defaultValue [MapDefaultValueProvider.Singleton] typeof<Map<int,int>> :?> Map<int,int>
+        let y = DefaultValueDriver.defaultValue [MapDefaultValue.getDefault] typeof<Map<int,int>> :?> Map<int,int>
         should.equal x y
 
 
