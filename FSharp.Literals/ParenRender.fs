@@ -186,7 +186,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         else
             arrayToString elementType elements
             |> fun content ->
-                String.Format("set [{0}]",content)
+                String.Format("set[{0}]",content)
             |> StringUtils.putparen precContext precedences.[" "]
 
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Map<_,_>> then 
@@ -197,7 +197,7 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         else
             arrayToString tupleType elements
             |> fun content ->
-                String.Format("Map [{0}]",content)
+                String.Format("Map[{0}]",content)
             |> StringUtils.putparen precContext precedences.[" "]
 
     elif ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<System.Collections.Generic.HashSet<_>> then
@@ -205,10 +205,10 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         let elements = reader value
         let elementType = ty.GenericTypeArguments.[0]
         if  Array.isEmpty elements then
-            "HashSet []"
+            "HashSet[]"
         else
             arrayToString elementType elements
-            |> fun content -> $"HashSet [{content}]"
+            |> fun content -> $"HashSet[{content}]"
             |> StringUtils.putparen precContext precedences.[" "]
 
     elif FSharpType.IsTuple ty then
