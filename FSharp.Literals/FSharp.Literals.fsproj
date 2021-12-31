@@ -9,12 +9,12 @@
 		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
 		<AssemblyVersion></AssemblyVersion>
 		<FileVersion></FileVersion>
-		<Version>2.2.6</Version>
+		<Version>2.2.7</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
 		<RepositoryType></RepositoryType>
-		<PackageReleaseNotes>Map,set,HashSet use array instead of list</PackageReleaseNotes>
+		<PackageReleaseNotes>use list literal instead of array literal</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/xp44mm/FSharp.Literals</PackageProjectUrl>
 		<Copyright>xp44mm</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
