@@ -160,7 +160,6 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
             "Nullable()"
         else
             let underlyingType = ty.GenericTypeArguments.[0]
-
             instanceToString precedences.[" "] underlyingType value
             |> sprintf "Nullable %s"
         |> StringUtils.putparen precContext precedences.[" "]
@@ -206,11 +205,10 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         let elements = reader value
         let elementType = ty.GenericTypeArguments.[0]
         if  Array.isEmpty elements then
-            "HashSet[]"
+            "HashSet []"
         else
             arrayToString elementType elements
-            |> fun content ->
-                String.Format("HashSet [{0}]",content)
+            |> fun content -> $"HashSet [{content}]"
             |> StringUtils.putparen precContext precedences.[" "]
 
     elif FSharpType.IsTuple ty then
@@ -256,7 +254,6 @@ let rec instanceToString (precContext:int) (ty:Type) (value:obj) =
         |> sprintf "{%s}"
 
     elif ty = typeof<Type> then
-        //TypeRender.printParen TypeRender.printers 0 (unbox<Type>value)
         TypeRender.stringifyParen TypeRender.stringifies 0 (unbox<Type>value)
         |> sprintf "typeof<%s>"
 

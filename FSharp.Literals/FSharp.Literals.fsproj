@@ -7,16 +7,17 @@
 		<Description>This package is used to print values and types as their appears in F# style. it also provide a function to get default value from type info.</Description>
 		<RepositoryUrl>https://github.com/xp44mm/FSharp.Literals</RepositoryUrl>
 		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-		<AssemblyVersion>2.2.4.0</AssemblyVersion>
-		<FileVersion>2.2.4.0</FileVersion>
-		<Version>2.2.4</Version>
+		<AssemblyVersion></AssemblyVersion>
+		<FileVersion></FileVersion>
+		<Version>2.2.6</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
 		<RepositoryType></RepositoryType>
-		<PackageReleaseNotes>update HashSet.</PackageReleaseNotes>
+		<PackageReleaseNotes>Map,set,HashSet use array instead of list</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/xp44mm/FSharp.Literals</PackageProjectUrl>
 		<Copyright>xp44mm</Copyright>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -68,11 +69,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FSharp.Idioms" Version="1.1.14" />
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="6.0.0" />
+	  <PackageReference Include="FSharp.Idioms" Version="1.1.20" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="6.0.1" />
 	</ItemGroup>
 
 </Project>

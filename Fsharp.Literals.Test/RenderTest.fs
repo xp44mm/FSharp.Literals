@@ -175,7 +175,7 @@ type RenderTest(output: ITestOutputHelper) =
 
         let ls = Set.ofList [1;2;3]
         let res = ParenRender.stringify ls
-        Assert.Equal("set [1;2;3]",res)
+        Assert.Equal("set [|1;2;3|]",res)
 
     [<Fact>]
     member this.``render map test``() =
@@ -184,13 +184,13 @@ type RenderTest(output: ITestOutputHelper) =
         let ls = Map ["1",1;"2",2;"3", 3]
         let res = ParenRender.stringify ls
 
-        Assert.Equal("""Map ["1",1;"2",2;"3",3]""",res)
+        Assert.Equal("""Map [|"1",1;"2",2;"3",3|]""",res)
 
     [<Fact>]
     member this.``render HashSet test``() =
         let ls = System.Collections.Generic.HashSet [1;2;3]
         let res = ParenRender.stringify ls
-        Assert.Equal("HashSet [1;2;3]",res)
+        Assert.Equal("HashSet [|1;2;3|]",res)
 
     [<Fact>]
     member this.``render tuple test``() =
