@@ -208,7 +208,7 @@ type RenderTest(output: ITestOutputHelper) =
     member this.``render record test``() =
         let record = {| name = "xyz"; ``your age`` = 18 |}
         let res = ParenRender.stringify record
-        Assert.Equal("""{name="xyz";``your age``=18}""",res)
+        Assert.Equal("""{name= "xyz";``your age``= 18}""",res)
 
     [<Fact>]
     member this.``render null test``() =
