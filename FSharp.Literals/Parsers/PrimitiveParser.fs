@@ -2,9 +2,11 @@
 
 
 open FSharp.Idioms
+open FSharp.Idioms.RegularExpressions
 
 open System.Globalization
 open System
+open System.Text.RegularExpressions
 
 type NumberInfo =
     {
@@ -44,37 +46,53 @@ let getBase (flags:Set<_>) =
 /// 当确定输入是数字后，试探着解析剩余的部分
 let rec private numberLoop (info:NumberInfo) inp =
     match inp with
-    | Prefix @"\.\d+" (x,rest) ->
+    | Search(Regex @"^\.\d+") m ->
+        let x = m.Value
+        let rest = inp.[m.Index+m.Value.Length..]
         let info = {
             known = [info.known.Head + x]
             flags = info.flags.Add '.'
         }
         numberLoop info rest
-    | Prefix @"[eE][-+]?\d+" (x,rest) ->
+    | Search(Regex @"^[eE][-+]?\d+") m ->
+        let x = m.Value
+        let rest = inp.[m.Index+m.Value.Length..]
+
         let info = {
             known = [info.known.Head + x]
             flags = info.flags.Add 'e'
         }
         numberLoop info rest
-    | Prefix @"[xX][0-9a-fA-F]+" (x,rest) ->
+    | Search(Regex @"^[xX][0-9a-fA-F]+") m ->
+        let x = m.Value
+        let rest = inp.[m.Index+m.Value.Length..]
         let info = {
             known = [x.[1..]]
             flags = info.flags.Add 'x'
         }
         numberLoop info rest
-    | Prefix @"[oO][0-7]+" (x,rest) ->
+    | Search(Regex @"^[oO][0-7]+") m ->
+        let x = m.Value
+        let rest = inp.[m.Index+m.Value.Length..]
+
         let info = {
             known = [x.[1..]]
             flags = info.flags.Add 'o'
         }
         numberLoop info rest
-    | Prefix @"[bB][01]+" (x,rest) ->
+    | Search(Regex @"^[bB][01]+") m ->
+        let x = m.Value
+        let rest = inp.[m.Index+m.Value.Length..]
+
         let info = {
             known = [x.[1..]]
             flags = info.flags.Add 'b'
         }
         numberLoop info rest
-    | Prefix @"([fFmMIu]|u?[ysln]|U?L)\b" (x,rest) ->
+    | Search(Regex @"^([fFmMIu]|u?[ysln]|U?L)\b") m ->
+        let x = m.Value
+        let rest = inp.[m.Index+m.Value.Length..]
+
         let info = {
             known = x :: info.known
             flags = info.flags.Add '$'
@@ -183,10 +201,10 @@ let rec private numberLoop (info:NumberInfo) inp =
 //    | Prefix """(?:"(\\[/'"bfnrt\\]|\\[0-9a-fA-F]{3}|\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8}|[^\\"])*")""" (lexeme,rest) ->
 //        STRING(StringLiteral.parseStringLiteral lexeme)
 //    //错误，见stringUtils
-//    | Prefix @"'(\\[\\'bfnrt]|\\u[0-9a-fA-F]{4}|[^\\'])'" (lexeme,rest) ->
+//    | Search(Regex @"^'(\\[\\'bfnrt]|\\u[0-9a-fA-F]{4}|[^\\'])'" (lexeme,rest) ->
 //        CHAR(StringLiteral.parseCharLiteral lexeme)
 
-//    | Prefix @"[-+]?\d+" (lexeme,rest) ->
+//    | Search(Regex @"^[-+]?\d+" (lexeme,rest) ->
 //        let known, flags =
 //            match lexeme.[0] with
 //            | '-' -> lexeme.[1..], set ['-']

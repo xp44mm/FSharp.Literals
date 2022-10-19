@@ -9,12 +9,12 @@
 		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
 		<AssemblyVersion></AssemblyVersion>
 		<FileVersion></FileVersion>
-		<Version>2.2.9</Version>
+		<Version>2.2.10</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
 		<RepositoryType></RepositoryType>
-		<PackageReleaseNotes>Add a space after the equal sign to separate the operators.</PackageReleaseNotes>
+		<PackageReleaseNotes>update idioms and remove obsolete call</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/xp44mm/FSharp.Literals</PackageProjectUrl>
 		<Copyright>xp44mm</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -76,11 +76,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FSharp.Idioms" Version="1.1.21" />
+	  <PackageReference Include="FSharp.Idioms" Version="1.2.12" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="6.0.3" />
+		<PackageReference Update="FSharp.Core" Version="6.0.6" />
 	</ItemGroup>
 
 </Project>
