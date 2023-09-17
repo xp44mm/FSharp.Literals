@@ -55,17 +55,6 @@ let ArrayTypeStringify (ty:Type) =
         )
     else None
 
-//let ArrayTypePrinter = {
-//    new TypePrinter with
-//        member _.filter(ty) = ty.IsArray && ty.GetArrayRank() = 1
-//        member _.print(loop, prec, ty) = 
-//            let arrayPrec = precedences.["[]"]
-//            //Console.WriteLine(sprintf"arrayPrec:%d" arrayPrec)
-//            let elementType = ty.GetElementType()
-//            loop arrayPrec elementType + "[]"
-//            |> StringUtils.putparen prec arrayPrec
-//}
-
 let TupleTypeStringify (ty:Type) =
     if FSharpType.IsTuple ty then
         Some(fun loop prec ->
@@ -77,21 +66,9 @@ let TupleTypeStringify (ty:Type) =
         )
     else None
 
-//let TupleTypePrinter = {
-//    new TypePrinter with
-//        member _.filter(ty) = FSharpType.IsTuple ty
-//        member _.print(loop, prec, ty) = 
-//            let tuplePrec = precedences.["*"]
-//            //Console.WriteLine(sprintf"tuplePrec:%d" tuplePrec)
-
-//            FSharpType.GetTupleElements ty
-//            |> Array.map(loop (tuplePrec+1))
-//            |> String.concat "*"
-//            |> StringUtils.putparen prec tuplePrec
-//}
-
 let getGenericTypeName (type_name:string) =
     match type_name.Split('`').[0] with
+    | "FSharpOption" -> "option"
     | "FSharpList" -> "list"
     | "FSharpSet" -> "Set"
     | "FSharpMap" -> "Map"
@@ -114,21 +91,6 @@ let GenericTypeDefinitionStringify (ty:Type) =
         )
     else None
 
-//let GenericTypeDefinitionPrinter = {
-//    new TypePrinter with
-//        member _.filter(ty) = ty.IsGenericType && ty.IsGenericTypeDefinition
-//        member _.print(loop, prec, ty) = 
-//            let name = getGenericTypeName ty.Name
-
-//            ty.GetGenericArguments()
-//            |> Array.filter(fun p -> p.IsGenericParameter)
-//            |> Array.sortBy(fun p -> p.GenericParameterPosition)
-//            |> Array.map(fun t -> "'" + t.Name)
-//            |> String.concat ","
-//            |> sprintf "%s<%s>" name
-//            |> StringUtils.putparen prec precedences.["<>"]
-//}
-
 let GenericTypeStringify (ty:Type) =
     if ty.IsGenericType then
         Some(fun loop prec ->
@@ -141,18 +103,6 @@ let GenericTypeStringify (ty:Type) =
         )
     else None
 
-//let GenericTypePrinter = {
-//    new TypePrinter with
-//        member _.filter(ty) = ty.IsGenericType
-//        member _.print(loop, prec, ty) = 
-//            let name = getGenericTypeName ty.Name
-//            ty.GenericTypeArguments
-//            |> Array.map(loop precedences.[","])
-//            |> String.concat ","
-//            |> sprintf "%s<%s>" name
-//            |> StringUtils.putparen prec precedences.["<>"]
-//}
-
 let AnonymousRecordTypeStringify (ty:Type) =
     if FSharpType.IsRecord ty && Regex.IsMatch(ty.Name,"^<>f__AnonymousType\d+`\d+$") then
         Some(fun loop prec ->
@@ -162,16 +112,6 @@ let AnonymousRecordTypeStringify (ty:Type) =
             |> sprintf "{|%s|}"
         )
     else None
-
-//let AnonymousRecordTypePrinter = {
-//    new TypePrinter with
-//        member _.filter(ty) = FSharpType.IsRecord ty && Regex.IsMatch(ty.Name,"^<>f__AnonymousType\d+`\d+$")
-//        member _.print(loop, prec, ty) = 
-//            FSharpType.GetRecordFields ty
-//            |> Array.map(fun pi -> sprintf "%s:%s" pi.Name <| loop precedences.[":"] pi.PropertyType)
-//            |> String.concat ";"
-//            |> sprintf "{|%s|}"
-//}
 
 let FunctionTypeStringify (ty:Type) =
     if FSharpType.IsFunction ty then
@@ -185,22 +125,6 @@ let FunctionTypeStringify (ty:Type) =
         )
     else None
 
-
-//let FunctionTypePrinter = {
-//    new TypePrinter with
-//        member _.filter(ty) = FSharpType.IsFunction ty
-//        member _.print(loop, prec, ty) = 
-//            let domainType, rangeType = FSharpType.GetFunctionElements ty
-
-//            let funPrec = precedences.["->"]
-
-//            let domainType = loop (funPrec+1) domainType
-//            let rangeType  = loop (funPrec-1) rangeType
-
-//            sprintf "%s->%s" domainType rangeType
-//            |> StringUtils.putparen prec funPrec
-//}
-
 let stringifies = [
     ArrayTypeStringify
     TupleTypeStringify
@@ -209,25 +133,6 @@ let stringifies = [
     GenericTypeDefinitionStringify
     GenericTypeStringify
 ]
-
-//let printers = [
-//    ArrayTypePrinter
-//    TupleTypePrinter
-//    AnonymousRecordTypePrinter
-//    FunctionTypePrinter
-//    GenericTypeDefinitionPrinter
-//    GenericTypePrinter
-//]
-
-///// 根据优先级确定表达式是否带括号
-//let rec printParen (printers:#seq<TypePrinter>) (prec:int) (ty:Type) =
-//    let print =
-//        printers
-//        |> Seq.tryFind(fun reader -> reader.filter ty)
-//        |> Option.map(fun x -> x.print)
-//        |> Option.defaultValue(fun(loop,prec,ty) -> printSimpleType ty)
-
-//    print(printParen printers, prec, ty)
 
 /// 根据优先级确定表达式是否带括号
 let rec stringifyParen (stringifies:#seq<Type->((int->Type->string)->int->string)option>) (prec:int) (ty:Type) =

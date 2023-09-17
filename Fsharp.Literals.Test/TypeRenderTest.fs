@@ -70,6 +70,12 @@ type TypeRenderTest(output: ITestOutputHelper) =
         should.equal y "Nullable<'T>"
 
     [<Fact>]
+    member this.``option type test``() =
+        let ty = typeof<option<int>>
+        let y = Render.stringifyTypeDynamic ty
+        should.equal y "option<int>"
+
+    [<Fact>]
     member this.``list type test``() =
         let ty = typeof<list<int>>
         let y = Render.stringifyTypeDynamic ty
