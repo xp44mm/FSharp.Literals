@@ -9,12 +9,12 @@
 		<PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
 		<AssemblyVersion></AssemblyVersion>
 		<FileVersion></FileVersion>
-		<Version>2.2.13</Version>
+		<Version>2.2.14</Version>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<NeutralLanguage></NeutralLanguage>
 		<RepositoryType></RepositoryType>
-		<PackageReleaseNotes>FSharpOption &gt; option</PackageReleaseNotes>
+		<PackageReleaseNotes>update nuget</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/xp44mm/FSharp.Literals</PackageProjectUrl>
 		<Copyright>xp44mm</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -76,7 +76,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FSharp.Idioms" Version="1.3.1" />
+	  <PackageReference Include="FSharp.Idioms" Version="1.3.2" />
 	</ItemGroup>
 
 	<ItemGroup>
